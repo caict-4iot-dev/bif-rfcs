@@ -171,7 +171,7 @@ BIDComm加密参考JWE(JSON Web Encryption)规范[https://datatracker.ietf.org/d
 
 SM2规范：[https://datatracker.ietf.org/doc/html/draft-shen-sm2-ecdsa-02](https://datatracker.ietf.org/doc/html/draft-shen-sm2-ecdsa-02)
 
-SM4规范：[https://datatracker.ietf.org/doc/html/draft-shen-sm2-ecdsa-02](https://datatracker.ietf.org/doc/html/draft-crypto-sm4-00)
+SM4规范：[https://datatracker.ietf.org/doc/html/draft-crypto-sm4-00](https://datatracker.ietf.org/doc/html/draft-crypto-sm4-00)
 
 > 图 4-6 加密信封结构图
 
@@ -447,9 +447,9 @@ BIDComm加密信封示例：
 
 对消息进行加密，不在消息中添加签名信息。
 
-跳过签名信封封装，直接将消息明文数据加密生成密文ciphertext。
+跳过签名信封封装，直接将消息明文数据加密生成密文`ciphertext`。
 
-接收方根据每层“typ”值判断解析层级。
+接收方根据每层`typ`值判断解析层级。
 
 #### 5.2.3.3.   可验证公有消息
 
@@ -457,7 +457,7 @@ BIDComm加密信封示例：
 
 跳过加密信封封装，直接将签名信封发送至接收方。
 
-接收方根据每层“typ”值判断解析层级。
+接收方根据每层`typ`值判断解析层级。
 
 #### 5.2.3.4.   不可验证公有消息
 
@@ -465,7 +465,7 @@ BIDComm加密信封示例：
 
 直接将消息明文发送至接收方。
 
-接收方根据每层“typ”值判断解析层级。
+接收方根据每层`typ`值判断解析层级。
 
 ## 5.3.  <span id="jump5-3">消息明文规范</span>
 
@@ -520,7 +520,7 @@ protocol-name / protocol-version / message-type-name
 
 消息ID格式设计规范：
 
-- id的值是一个不大于32字节的字符串，符合正则表达式[-_./a-ZA-Z0-9]{8,64}；
+- id的值是一个不大于32字节的字符串，符合正则表达式`[-_./a-ZA-Z0-9]{8,64}`；
 
 - 不区分大小写；
 
@@ -573,7 +573,7 @@ timing：时间标识符，修饰时间相关字段，包括消息创建时间�
 
 - expires_time：发送方规定的消息过期时间，以时间戳表示；
 
-- _l10n：数据本地化，可用当地时间描述相关字段，如“created_time_l10n”: “2021-01-01T01:00:00Z”。
+- _l10n：数据本地化，可用当地时间描述相关字段，如`“created_time_l10n”: “2021-01-01T01:00:00Z”`。
 
 ```json
 {
