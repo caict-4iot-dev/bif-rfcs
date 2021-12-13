@@ -90,7 +90,7 @@ BIDComm协议有两层结构组成，信封层和消息层。
 
 基于信封层、消息层的架构设计，BIDComm的消息结构使用嵌套结构模式。结构模式如图4-3所示。
 
-> 图4-3 BIDComm消息结构
+> <span id="jump4-3">图4-3 BIDComm消息结构</span>
 
 ![image](https://user-images.githubusercontent.com/90955034/145359595-2ad4ea9c-c1ad-4600-9c44-6dfb2df6bc9f.png)
 
@@ -104,7 +104,7 @@ BIDComm格式类型分为三种：消息明文、签名信封、加密信封。
 
 当发送方以此嵌套模式将消息发送后，接收方依次进行解密、验签、解析原文，获取消息内容。
 
-每层消息中均有typ属性，标明该层消息的类别，类型描述见表2-1。
+每层消息中均有typ属性，标明该层消息的类别，类型描述见表4-1。
 
 > 表 4-1 消息类型描述
 
@@ -128,13 +128,13 @@ BIDComm协议基于DIDComm规范，设计为支持BID的使用，并在其基础
 
 其中，除content外的字段称为消息头，为协议的标准数据结构；content字段为消息主体，定义应用场景中所需的字段和数据结构。
 
-消息明文消息字段规范见消息明文规范。TODO
+消息明文消息字段规范见[消息明文规范](#jump5-3)。
 
 #### 4.2.2.2.   信封结构
 
-##### 4.2.2.2.1. 签名信封结构
+##### <span id="jump4-1">4.2.2.2.1. 签名信封结构</span>
 
-BIDComm签名参考JWS（Json Web Signature）规范（https://datatracker.ietf.org/doc/html/rfc7515#appendix-F），设计BIDComm签名信封规范。签名信封结构如图4-4所示。
+BIDComm签名参考JWS（Json Web Signature）规范[https://datatracker.ietf.org/doc/html/rfc7515#appendix-F](https://datatracker.ietf.org/doc/html/rfc7515#appendix-F)，设计BIDComm签名信封规范。签名信封结构如图4-4所示。
 
 > 图4-4 签名信封结构图
 
@@ -159,19 +159,19 @@ BIDComm签名参考JWS（Json Web Signature）规范（https://datatracker.ietf.
 
 - BIDComm的签名信封统一使用多重签名信封结构，若仅有单一签名，则在多重签名中只填充一组签名字段。
 
-签名信封的具体流程和详细字段规范见第三章签名信封规范。TODO
+签名信封的具体流程和详细字段规范见[签名信封规范](#jump5-1)。
 
-##### 4.2.2.2.2. 加密信封结构
+##### <span id="jump4-2">4.2.2.2.2. 加密信封结构</span>
 
-BIDComm加密参考JWE(JSON Web Encryption)规范（https://datatracker.ietf.org/doc/html/rfc7516），设计BIDComm加密信封规范。
+BIDComm加密参考JWE(JSON Web Encryption)规范[https://datatracker.ietf.org/doc/html/rfc7516](https://datatracker.ietf.org/doc/html/rfc7516)，设计BIDComm加密信封规范。
 
 加密信封结构如图4-6所示。
 
 在BIDComm加密规范中，对称加密推荐使用SM4，非对称加密推荐使用SM2。
 
-SM2规范：https://datatracker.ietf.org/doc/html/draft-shen-sm2-ecdsa-02。
+SM2规范：[https://datatracker.ietf.org/doc/html/draft-shen-sm2-ecdsa-02](https://datatracker.ietf.org/doc/html/draft-shen-sm2-ecdsa-02)
 
-SM4规范：https://datatracker.ietf.org/doc/html/draft-crypto-sm4-00。
+SM4规范：[https://datatracker.ietf.org/doc/html/draft-shen-sm2-ecdsa-02](https://datatracker.ietf.org/doc/html/draft-crypto-sm4-00)
 
 > 图 4-6 加密信封结构图
 
@@ -198,13 +198,13 @@ SM4规范：https://datatracker.ietf.org/doc/html/draft-crypto-sm4-00。
 
 - 对称加密密文：消息明文使用对称加密密钥加密的密文
 
-加密信封的具体流程和详细字段规范见第4章加密信封规范。TODO
+加密信封的具体流程和详细字段规范见[加密信封规范](#jump5-2)。
 
 # 5. 规范
 
-根据[BIDComm消息结构中图4-3](# 4.2.2.  BIDComm消息结构)的设计结构层级，按照签名信封、加密信封和消息明文制定BIDComm的规范。
+根据BIDComm消息结构中[图4-3](#jump4-3)的设计结构层级，按照签名信封、加密信封和消息明文制定BIDComm的规范。
 
-## 5.1.  签名信封规范
+## 5.1.  <span id="jump5-1">签名信封规范</span>
 
 ### 5.1.1.  签名信封流程规范
 
@@ -234,7 +234,7 @@ BIDComm签名流程如图5-1所示。
 
 ### 5.1.2.  签名信封字段规范
 
-根据[4.2.2.2.1 签名信封结构](# 4.2.2.2.1. 签名信封结构)设计的签名信封结构，设计以下字段，对应相应的结构层级，给出编码方式。
+根据[签名信封结构](#jump4-1)设计的签名信封结构，设计以下字段，对应相应的结构层级，给出编码方式。
 
 | 字段名     | 子字段 | 子字段 | 结构层级       | 描述                 | 编码方式   |
 | ---------- | ------ | ------ | -------------- | -------------------- | ---------- |
@@ -262,7 +262,7 @@ BIDComm签名信封示例：
 }
 ```
 
-## 5.2.  加密信封规范
+## 5.2.  <span id="jump5-2">加密信封规范</span>
 
 ### 5.2.1.  加密信封加密流程
 
@@ -313,7 +313,7 @@ BIDComm加密流程如图5-2所示。
 
 ### 5.2.2.  加密信封字段规范
 
-根据[4.2.2.2.2 加密信封结构](# 4.2.2.2.2. 加密信封结构)设计的加密信封结构，设计以下字段，对应相应的结构层级，给出编码方式。
+根据[加密信封结构](#jump4-2)设计的加密信封结构，设计以下字段，对应相应的结构层级，给出编码方式。
 
 | 字段名     | 子字段        | 结构层级                     | 描述                         | 编码方式   |
 | ---------- | ------------- | ---------------------------- | ---------------------------- | ---------- |
@@ -467,7 +467,7 @@ BIDComm加密信封示例：
 
 接收方根据每层“typ”值判断解析层级。
 
-## 5.3. 消息明文规范
+## 5.3.  <span id="jump5-3">消息明文规范</span>
 
 ### 5.3.1.  消息类型
 
