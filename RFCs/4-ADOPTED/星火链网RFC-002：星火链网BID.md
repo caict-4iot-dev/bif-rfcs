@@ -2,9 +2,9 @@
 
 # 1. 序言
 
-编号：RFC-002
+编号：XRC-002
 
-类型：RFC
+类型：XRC
 
 标题：星火链网BID
 
@@ -18,7 +18,7 @@
 
 讨论地址：https://github.com/CAICT-DEV/BIF-RFCs/issues/2
 
-依赖RFC：无
+依赖XRC：无
 
 # 2. 摘要
 

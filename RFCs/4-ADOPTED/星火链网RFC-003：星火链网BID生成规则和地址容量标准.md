@@ -1,8 +1,8 @@
 # 1. 序言
 
-编号：RFC-003
+编号：XRC-003
 
-类型：RFC
+类型：XRC
 
 标题：星火链网BID生成规则和地址容量标准
 
@@ -16,7 +16,7 @@
 
 讨论地址：https://github.com/CAICT-DEV/BIF-RFCs/issues/3
 
-依赖RFC：[星火链网RFC-002：星火链网BID](星火链网RFC-002：星火链网BID.md)
+依赖XRC：[星火链网RFC-002：星火链网BID](星火链网RFC-002：星火链网BID.md)
 
 
 
