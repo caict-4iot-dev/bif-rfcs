@@ -1,8 +1,8 @@
-# 星火链网RFC-007：星火链网BID可信证书协议标准
+# 星火链网RFC-008：星火链网BID可信证书协议标准
 
 # 1. 序言
 
-编号：XRC-007
+编号：XRC-008
 
 类型：XRC
 
@@ -18,7 +18,7 @@
 
 讨论地址：https://github.com/CAICT-DEV/BIF-RFCs/issues/7
 
-依赖XRC：[星火链网RFC-002：星火链网BID](星火链网RFC-002：星火链网BID.md)
+依赖XRC：[星火链网RFC-002：星火链网分布式标识BID](星火链网RFC-002：星火链网分布式标识BID.md)
 
 # 2. 摘要
 

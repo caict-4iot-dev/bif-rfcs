@@ -1,6 +1,8 @@
+# 星火链网RFC-007：星火链网BIDAuth协议标准
+
 # 1. 序言
 
-编号：XRC-006
+编号：XRC-007
 
 类型：XRC
 
@@ -16,7 +18,7 @@
 
 讨论地址：https://github.com/CAICT-DEV/BIF-RFCs/issues/4
 
-依赖XRC：[星火链网RFC-002：星火链网BID](星火链网RFC-002：星火链网BID.md)
+依赖XRC：[星火链网RFC-002：星火链网分布式标识BID](星火链网RFC-002：星火链网分布式标识BID.md)
 # 2. 摘要
 
 本文介绍星火链网BIDAuth认证协议的流程和规范。
