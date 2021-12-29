@@ -18,7 +18,7 @@
 
 讨论地址：https://github.com/CAICT-DEV/BIF-RFCs/issues/4
 
-依赖XRC：[星火链网RFC-002：星火链网BID](星火链网RFC-002：星火链网BID.md)
+依赖XRC：[星火链网RFC-002：星火链网分布式标识BID](星火链网RFC-002：星火链网分布式标识BID.md)
 
 # 2. 摘要
 
@@ -34,9 +34,9 @@ BID管理协议的主要目标是设计一种基于分布式标识符DID规范�
 
 ## 4.1 BID简介
 
-星火标识BID（Blockchain-based Identifier，简称BID）,是星火·链网的数据载体，也是星火链底层支持的原生地址，同时BID还是加入到分布式身份标识符DID注册表的一个METHOD，BID的组成结构如下。
+星火标识BID（Blockchain-based Identifier，简称BID）,是星火·链网的数据载体，也是星火链底层支持的原生地址，同时BID还是加入到分布式身份标识符DID注册表的一个METHOD。
 
-![image](https://user-images.githubusercontent.com/1982712/146703523-aa25f82a-4a8b-4292-b74a-972078484518.png)
+BID的组成结构参见[星火链网RFC-002：星火链网分布式标识BID](星火链网RFC-002：星火链网分布式标识BID.md#bid)中的BID规范。
 
 did:bid:byo1(AC号) 这样的BID是一类特殊的BID, 存放子链解析服务，只有前三个部分，不包含后缀。对应的BID文档里存放子链解析地址。
 
@@ -54,6 +54,8 @@ suffix = (22,42)(ALPHA / DIGIT);长度范围22-42的字母或数字组合
 
 ## 4.2 架构
 
+<span id="bid">BID的架构如下：</span>
+
 ![image](https://user-images.githubusercontent.com/1982712/146703973-7093a9ff-e39f-4c10-97f6-91ca3b3e8d8c.png)
 
 BID标识依托于星火链主子链架构，是一个层次化的模型，由主链和子链组成。同一私钥在主链和子链上使用相同的数字身份,只是在子链上的BID多了AC号。
@@ -64,7 +66,7 @@ BID标识依托于星火链主子链架构，是一个层次化的模型，由�
 
 # 5. 规范
 
-## 5.1 协议元数据
+## <span id="meta">5.1 协议元数据</span>
 
 BID的协议元数据为BID文档。BID文档遵循DID Document规范，并在之基础上做了一定的扩展。BID文档字段说明如下：
 

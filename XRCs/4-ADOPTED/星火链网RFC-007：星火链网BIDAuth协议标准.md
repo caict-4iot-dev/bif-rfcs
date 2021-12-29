@@ -19,6 +19,9 @@
 讨论地址：https://github.com/CAICT-DEV/BIF-RFCs/issues/4
 
 依赖XRC：[星火链网RFC-002：星火链网分布式标识BID](星火链网RFC-002：星火链网分布式标识BID.md)
+
+​                  [星火链网RFC-006：星火链网BIDComm协议标准](星火链网RFC-006：星火链网BIDComm协议标准.md)
+
 # 2. 摘要
 
 本文介绍星火链网BIDAuth认证协议的流程和规范。
@@ -195,47 +198,9 @@ content内容具体包括type、bid、publicKey。
 
 #### 5.1.3.2 bid
 
-在BIDAuth协议中，需要使用到BID规范中的BID，BID的基本格式：
+在BIDAuth协议中，需要使用到BID规范中的BID。
 
-星火标识BID（Blockchain-based Identifier，简称BID）,是星火·链网的数据载体，也是星火链底层支持的原生地址，同时BID还是加入到分布式身份标识符DID注册表的一个METHOD。BID的组成结构如下：
-
-![image-20211206163837375](https://user-images.githubusercontent.com/76681420/145171377-4c6653d0-de94-4300-b92b-964ce2e77e86.png)
-did:bid:byo1(AC号) 这样的BID是一类特殊的BID, 标识子链解析服务，只有前三个部分，不包含后缀。对应的BID文档里存放子链解析地址。
-
-BID标识的ABNF定义如下：
-
-```
-bid-did =  "did:bid:" bid-specific-identifier ; 固定的did:bid前缀  
-bid-specific-identifier  =  0*1(acsn ":") suffix /  acsn ":" 0*1(suffix) ; acsn(可选):后缀 或者 acsn:后缀(可选)  
-acsn =  4(ALPHA / DIGIT); 4个字母或数字组合  
-suffix =  (22,42)(ALPHA / DIGIT);长度范围22-42的字母或数字组合
-```
-
-加密类型表示加密算法类型：
-
-| 加密类型     | 公私钥支持算法 |
-| ------------ | -------------- |
-| ‘e’          | ED25519        |
-| ‘z’          | SM2            |
-| ‘s’          | Secp256k1      |
-| 其他小写字母 | 预留待扩展     |
-
-
-编码类型：
-| 编码类型     | 编码方式   | 截取公钥哈希长度 |
-| ------------ | ---------- | ---------------- |
-| ‘f’          | Base58     | 22               |
-| ‘s’          | Base64     | 22               |
-| ‘t’          | Bech32     | 22               |
-| 其他小写字母 | 预留待扩展 | 预留待扩展       |
-
-比如使用ED25519类型、Base58编码的BID，如下：
-
-did:bid:ef28EozamRq4hvsNs3rdqxGE4fvkcK9yU
-
-使用SM2类型、Base58编码的BID，如下：
-
-did:bid: zf27zkk8D72F13HAzY1ECsK12VPUHxKZS
+BID的组成结构参见[星火链网RFC-002：星火链网分布式标识BID](星火链网RFC-002：星火链网分布式标识BID.md#bid)中的BID规范。
 
 #### 5.1.3.3 publicKey
 
