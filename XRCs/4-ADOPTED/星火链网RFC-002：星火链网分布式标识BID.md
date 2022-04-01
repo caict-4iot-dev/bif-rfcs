@@ -2,9 +2,9 @@
 
 # 1. 序言
 
-编号：XRC-002
+编号：RFC-002
 
-类型：XRC
+类型：标准
 
 标题：星火链网分布式标识BID
 
@@ -16,9 +16,9 @@
 
 更新时间：2021-12-10
 
-讨论地址：https://github.com/CAICT-DEV/BIF-RFCs/issues/2
+讨论地址：https://github.com/caict-4iot-dev/BIF-RFCs/issues/2
 
-依赖XRC：无
+依赖RFC：无
 
 # 2. 摘要
 

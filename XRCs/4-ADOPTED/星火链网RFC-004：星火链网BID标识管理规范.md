@@ -2,9 +2,9 @@
 
 # 1. 序言
 
-编号：XRC-004
+编号：RFC-004
 
-类型：XRC
+类型：标准
 
 标题：星火链网BID标识管理规范
 
@@ -16,9 +16,9 @@
 
 更新时间：2021-12-21
 
-讨论地址：https://github.com/CAICT-DEV/BIF-RFCs/issues/4
+讨论地址：https://github.com/caict-4iot-dev/BIF-RFCs/issues/4
 
-依赖XRC：[星火链网RFC-002：星火链网分布式标识BID](星火链网RFC-002：星火链网分布式标识BID.md)
+依赖RFC：[星火链网RFC-002：星火链网分布式标识BID](星火链网RFC-002：星火链网分布式标识BID.md)
 
 # 2. 摘要
 
