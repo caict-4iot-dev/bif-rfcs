@@ -8,7 +8,7 @@
 
 标题：星火链网DNA协议标准
 
-作者：金健，jinjian1@caict.ac.cn；谢家贵，xiejiagui@caict.ac.cn；李志平，lizhiping@caict.ac.cn；魏星，weixing3@caict.ac.cn
+作者：金健，[jinjian1@caict.ac.cn](mailto:jinjian1@caict.ac.cn)；谢家贵，[xiejiagui@caict.ac.cn](mailto:xiejiagui@caict.ac.cn)；李志平，[lizhiping@caict.ac.cn](mailto:lizhiping@caict.ac.cn)；魏星，[weixing3@caict.ac.cn](mailto:weixing3@caict.ac.cn)
 
 发布时间：2022-04-29
 
@@ -56,7 +56,7 @@ DNA协议中定义了如下接口，为了保持合约的规范性，用户在�
 
 下面对该协议的具体接口进行介绍，该协议支持solidity、js等多种编程语言的实现。
 
-文中出现的address类型，指的是did:bid地址类型。关于did:bid地址，请参考[星火链网RFC-002：星火链网分布式标识BID](https://github.com/caict-4iot-dev/bif-rfcs/blob/main/RFCs/4-ADOPTED/%E6%98%9F%E7%81%AB%E9%93%BE%E7%BD%91RFC-003%EF%BC%9A%E6%98%9F%E7%81%AB%E9%93%BE%E7%BD%91BID%E7%94%9F%E6%88%90%E8%A7%84%E5%88%99%E5%92%8C%E5%9C%B0%E5%9D%80%E5%AE%B9%E9%87%8F%E6%A0%87%E5%87%86.md)
+文中出现的BID地址，指的是did:bid地址类型。关于did:bid地址，请参考[星火链网RFC-002：星火链网分布式标识BID](https://github.com/caict-4iot-dev/bif-rfcs/blob/main/RFCs/4-ADOPTED/星火链网RFC-002：星火链网分布式标识BID.md)
 
 DNA165是实现DNA721协议的一部分，IDNA165实现了检查合约接口定义的功能。如下：
 
@@ -77,14 +77,14 @@ interface IDNA165 {
 - 接口名
 
 ```
-supportsInterface(bytes4 interfaceId) 
+supportsInterface(string interfaceId) 
 ```
 
 - 参数说明
 
 | 参数名称    | 类型   | 必要性 | 参数描述                                            |
 | ----------- | ------ | ------ | --------------------------------------------------- |
-| interfaceId | bytes4 | 是     | 参数类型以solidity语言为例，interfaceId代表某个接口 |
+| interfaceId | string | 是     | 参数类型以solidity语言为例，interfaceId代表某个接口 |
 
    * 返回值
 
@@ -112,29 +112,29 @@ DNA协议中有5个事件，分别是：
 
 1）转移DNA时：
 
-`event Transfer(address from, address to, long tokenId);`
+`event Transfer(string from, string to, string tokenId);`
 
 当`tokenId` 所指的DNA从 `from` 转移到 `to` 时触发此事件，或者当一个DNA被创建出来的时候，触发此事件。
 
 2）授权DNA时：
-`event Approval(address owner, address approved, long tokenId);`
+`event Approval(string owner, string approved, string tokenId);`
 
 当 `owner` 使用 `approved()` 接口将 `tokenId` 所指的DNA授权给`approved`时，触发此事件。
 
 3）授权所有DNA时：
 
-`event ApprovalForAll(address owner, address operator, bool approved);`
+`event ApprovalForAll(string owner, string operator, bool approved);`
 
 当 `owner` 使用 `setApprovalForAll()` 接口将自己所有的DNA授权给`operator`时，触发此事件。
 
 4）建立tokenId和BID的映射关系时：
-`event bindDNA(long tokenId，string bid);`
+`event bindDNA(string tokenId，string bid);`
 
 当建立起`tokenId`和`BID`的映射关系时，触发此事件。
 
 5）设置DNA的可用状态时：
 
-`event setState(long tokenId，long state);`
+`event setState(string tokenId，string state);`
 
 当设置DNA的可用状态时，触发此事件。
 
@@ -153,14 +153,14 @@ DNA协议中有5个事件，分别是：
 - 接口名
 
 ```
-create(address to)
+create(string to)
 ```
 
 - 参数说明
 
-| 参数名称 | 类型    | 必要性 | 参数描述               |
-| -------- | ------- | ------ | ---------------------- |
-| to       | address | 是     | DNA的接收者，用BID表示 |
+| 参数名称 | 类型   | 必要性 | 参数描述               |
+| -------- | ------ | ------ | ---------------------- |
+| to       | string | 是     | DNA的接收者，用BID表示 |
 
    * 返回值
 
@@ -183,20 +183,20 @@ create(address to)
 - 接口名
 
 ```
-balanceOf(address owner)
+balanceOf(string owner)
 ```
 
 - 参数说明
 
-| 参数名称 | 类型    | 必要性 | 参数描述               |
-| -------- | ------- | ------ | ---------------------- |
-| owner    | address | 是     | DNA的所有人，用BID表示 |
+| 参数名称 | 类型   | 必要性 | 参数描述               |
+| -------- | ------ | ------ | ---------------------- |
+| owner    | string | 是     | DNA的所有人，用BID表示 |
 
    * 返回值
 
-| 参数名称 | 类型 | 参数描述 |
-| -------- | ---- | -------- |
-| balance  | long | 余额数量 |
+| 参数名称 | 类型   | 参数描述 |
+| -------- | ------ | -------- |
+| balance  | string | 余额数量 |
 
 - 事件
 
@@ -215,20 +215,20 @@ balanceOf(address owner)
 - 接口名
 
 ```
-ownerOf(long tokenId)
+ownerOf(string tokenId)
 ```
 
 - 参数说明
 
-| 参数名称 | 类型 | 必要性 | 参数描述              |
-| -------- | ---- | ------ | --------------------- |
-| tokenId  | long | 是     | 某一个DNA的唯一标识符 |
+| 参数名称 | 类型   | 必要性 | 参数描述              |
+| -------- | ------ | ------ | --------------------- |
+| tokenId  | string | 是     | 某一个DNA的唯一标识符 |
 
    * 返回值
 
-| 参数名称 | 类型    | 参数描述                 |
-| -------- | ------- | ------------------------ |
-| owner    | address | tokenId所指的DNA的所有者 |
+| 参数名称 | 类型   | 参数描述                 |
+| -------- | ------ | ------------------------ |
+| owner    | string | tokenId所指的DNA的所有者 |
 
 - 事件
 
@@ -249,17 +249,17 @@ ownerOf(long tokenId)
 - 接口名
 
 ```
-approve(address to, long tokenId)
+approve(string to, string tokenId)
 ```
 
 - 参数说明
 
   合约调用者必须是DNA的所有者，或者是DNA所有者已经对合约调用者进行了全部授权的操作。
 
-| 参数名称 | 类型    | 必要性 | 参数描述              |
-| -------- | ------- | ------ | --------------------- |
-| to       | address | 是     | 目标账户              |
-| tokenId  | long    | 是     | 某一个DNA的唯一标识符 |
+| 参数名称 | 类型   | 必要性 | 参数描述              |
+| -------- | ------ | ------ | --------------------- |
+| to       | string | 是     | 目标账户              |
+| tokenId  | string | 是     | 某一个DNA的唯一标识符 |
 
    * 返回值
 
@@ -282,21 +282,21 @@ approve(address to, long tokenId)
 - 接口名
 
 ```
-getApproved(long tokenId)
+getApproved(string tokenId)
 ```
 
 - 参数说明
 
-| 参数名称 | 类型 | 必要性 | 参数描述              |
-| -------- | ---- | ------ | --------------------- |
-| tokenId  | long | 是     | 某一个DNA的唯一标识符 |
+| 参数名称 | 类型   | 必要性 | 参数描述              |
+| -------- | ------ | ------ | --------------------- |
+| tokenId  | string | 是     | 某一个DNA的唯一标识符 |
 
    * 返回值
 
 
-| 参数名称 | 类型    | 参数描述           |
-| -------- | ------- | ------------------ |
-| operator | address | 获得授权的账户地址 |
+| 参数名称 | 类型   | 参数描述           |
+| -------- | ------ | ------------------ |
+| operator | string | 获得授权的账户地址 |
 
 + 事件
 
@@ -317,15 +317,15 @@ getApproved(long tokenId)
 - 接口名
 
 ```
-setApprovalForAll(address operator, bool approved)
+setApprovalForAll(string operator, bool approved)
 ```
 
 - 参数说明
 
-| 参数名称 | 类型    | 必要性 | 参数描述                            |
-| -------- | ------- | ------ | ----------------------------------- |
-| operator | address | 是     | 获得授权的账户地址                  |
-| approved | bool    | 是     | true：授权；<br />false：取消授权； |
+| 参数名称 | 类型   | 必要性 | 参数描述                            |
+| -------- | ------ | ------ | ----------------------------------- |
+| operator | string | 是     | 获得授权的账户地址                  |
+| approved | bool   | 是     | true：授权；<br />false：取消授权； |
 
    * 返回值
 
@@ -348,15 +348,15 @@ setApprovalForAll(address operator, bool approved)
 - 接口名
 
 ```
-isApprovedForAll(address owner, address operator)
+isApprovedForAll(string owner, string operator)
 ```
 
 - 参数说明
 
-| 参数名称 | 类型    | 必要性 | 参数描述    |
-| -------- | ------- | ------ | ----------- |
-| owner    | address | 是     | DNA的所有者 |
-| operator | address | 是     | 授权的账户  |
+| 参数名称 | 类型   | 必要性 | 参数描述    |
+| -------- | ------ | ------ | ----------- |
+| owner    | string | 是     | DNA的所有者 |
+| operator | string | 是     | 授权的账户  |
 
    * 返回值
 
@@ -386,19 +386,19 @@ isApprovedForAll(address owner, address operator)
 
 ```
 transferFrom(
-    address from,
-    address to,
-    long tokenId
+    string from,
+    string to,
+    string tokenId
 ) 
 ```
 
 - 参数说明
 
-| 参数名称 | 类型    | 必要性 | 参数描述              |
-| -------- | ------- | ------ | --------------------- |
-| from     | address | 是     | DNA的所有者账户地址   |
-| to       | address | 是     | 接收DNA的账户地址     |
-| tokenId  | long    | 是     | 某一个DNA的唯一标识符 |
+| 参数名称 | 类型   | 必要性 | 参数描述              |
+| -------- | ------ | ------ | --------------------- |
+| from     | string | 是     | DNA的所有者账户地址   |
+| to       | string | 是     | 接收DNA的账户地址     |
+| tokenId  | string | 是     | 某一个DNA的唯一标识符 |
 
    * 返回值
 
@@ -430,19 +430,19 @@ transferFrom(
 
 ```
 safeTransferFrom(
-    address from,
-    address to,
-    long tokenId
+    string from,
+    string to,
+    string tokenId
 ) 
 ```
 
 - 参数说明
 
-| 参数名称 | 类型    | 必要性 | 参数描述              |
-| -------- | ------- | ------ | --------------------- |
-| from     | address | 是     | DNA的所有者账户地址   |
-| to       | address | 是     | 接收DNA的账户地址     |
-| tokenId  | long    | 是     | 某一个DNA的唯一标识符 |
+| 参数名称 | 类型   | 必要性 | 参数描述              |
+| -------- | ------ | ------ | --------------------- |
+| from     | string | 是     | DNA的所有者账户地址   |
+| to       | string | 是     | 接收DNA的账户地址     |
+| tokenId  | string | 是     | 某一个DNA的唯一标识符 |
 
    * 返回值
 
@@ -465,14 +465,14 @@ safeTransferFrom(
 - 接口名
 
 ```
-bindDNA(long tokenId, string bid);
+bindDNA(string tokenId, string bid);
 ```
 
 - 参数说明
 
 | 参数名称 | 类型   | 必要性 | 参数描述              |
 | -------- | ------ | ------ | --------------------- |
-| tokenId  | long   | 是     | 某一个DNA的唯一标识符 |
+| tokenId  | string | 是     | 某一个DNA的唯一标识符 |
 | bid      | string | 是     | 账户地址              |
 
    * 返回值
@@ -496,15 +496,15 @@ bindDNA(long tokenId, string bid);
 - 接口名
 
 ```
-setState(long tokenId，long state);
+setState(string tokenId，string state);
 ```
 
 - 参数说明
 
-| 参数名称 | 类型 | 必要性 | 参数描述                     |
-| -------- | ---- | ------ | ---------------------------- |
-| tokenId  | long | 是     | 某一个DNA的唯一标识符        |
-| state    | long | 是     | 0：锁定、不可用<br />1：可用 |
+| 参数名称 | 类型   | 必要性 | 参数描述                     |
+| -------- | ------ | ------ | ---------------------------- |
+| tokenId  | string | 是     | 某一个DNA的唯一标识符        |
+| state    | string | 是     | 0：锁定、不可用<br />1：可用 |
 
    * 返回值
 
@@ -527,38 +527,58 @@ setState(long tokenId，long state);
 - 接口名
 
 ```
-getState(long _tokenId) returns (long)
+getState(string _tokenId) returns (string)
 ```
 
 - 参数说明
 
-| 参数名称 | 类型 | 必要性 | 参数描述              |
-| -------- | ---- | ------ | --------------------- |
-| tokenId  | long | 是     | 某一个DNA的唯一标识符 |
+| 参数名称 | 类型   | 必要性 | 参数描述              |
+| -------- | ------ | ------ | --------------------- |
+| tokenId  | string | 是     | 某一个DNA的唯一标识符 |
 
    * 返回值
 
-| 参数名称 | 类型 | 必要性 | 参数描述      |
-| -------- | ---- | ------ | ------------- |
-| DNAstate | long | 是     | DNA的可用状态 |
+| 参数名称 | 类型   | 必要性 | 参数描述      |
+| -------- | ------ | ------ | ------------- |
+| DNAstate | string | 是     | DNA的可用状态 |
 
 - 事件
 
 ​       无
 
-
-
 ### 4.3 metadata格式
 
-DNA协议中规范了元数据（metadata）的格式内容，具体字段如下：
-
-| 内容         | 描述                                         |
-| ------------ | -------------------------------------------- |
-| name         | 项目名称                                     |
-| image        | NFT图片的RUL，建议使用350*350的图像。        |
-| description  | 对NFT的描述                                  |
-| external_url | 外部连接，可以展示NFT相关的网站              |
-| attributes   | state：NFT的状态，如果为冻结状态，不可转让。 |
-|              | collection:所属集合名称                      |
-|              | bid:绑定的主链bid                            |
+<table>
+<caption>DNA协议中规范了元数据（metadata）的格式内容，具体字段如下：</caption>
+    <tr> 
+     <th rowspan="1"> 内容 </th>
+        <th rowspan="1"> 描述 </th>
+   </tr>
+   <tr> 
+  <td> name </td>
+     <td>项目名称</td>
+   </tr>
+   <tr> 
+  <td> image </td>
+     <td>NFT图片的RUL，建议使用350*350的图像。</td>
+   </tr>
+   <tr> 
+  <td> description </td>
+     <td>对NFT的描述</td>
+   </tr>
+   <tr> 
+  <td>external_url</td>
+     <td>外部连接，可以展示NFT相关的网站</td>
+   </tr>
+    <tr> 
+     <td rowspan="3"> attributes </td>
+        <td rowspan="1"> state：NFT的状态，如果为冻结状态，不可转让。</td>
+   </tr>
+   <tr> 
+     <td>collection:所属集合名称</td>
+   </tr>
+   <tr> 
+     <td>bid:绑定的主链bid</td>
+   </tr>
+</table>
 
