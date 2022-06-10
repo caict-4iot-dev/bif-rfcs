@@ -555,30 +555,41 @@ getState(string _tokenId) returns (string)
         <th rowspan="1"> 描述 </th>
    </tr>
    <tr> 
-  <td> name </td>
-     <td>项目名称</td>
+  <td> seriesId </td>
+     <td>集合ID</td>
    </tr>
    <tr> 
-  <td> image </td>
-     <td>NFT图片的RUL，建议使用350*350的图像。</td>
+  <td> seriesIssuer </td>
+     <td>发行方</td>
    </tr>
    <tr> 
-  <td> description </td>
-     <td>对NFT的描述</td>
+  <td> dnaName </td>
+     <td>数字资产名称</td>
    </tr>
    <tr> 
-  <td>external_url</td>
-     <td>外部连接，可以展示NFT相关的网站</td>
-   </tr>
-    <tr> 
-     <td rowspan="3"> attributes </td>
-        <td rowspan="1"> state：NFT的状态，如果为冻结状态，不可转让。</td>
+  <td>dnaNumber</td>
+     <td>数字资产编号</td>
    </tr>
    <tr> 
-     <td>collection:所属集合名称</td>
+  <td>dnaDes</td>
+     <td>数字资产描述</td>
    </tr>
-   <tr> 
-     <td>bid:绑定的主链bid</td>
+ <tr> 
+  <td>url</td>
+     <td>数字资产url，建议图片尺寸350*350</td>
    </tr>
+ <tr> 
+  <td>hash</td>
+     <td>数字资产原文件哈希值</td>
+   </tr>
+ <tr> 
+  <td>dnaType</td>
+     <td>数字资产类型</td>
+   </tr>
+ <tr> 
+  <td>extension</td>
+     <td>扩展字段，用户自定义</td>
+   </tr>
+
 </table>
 
