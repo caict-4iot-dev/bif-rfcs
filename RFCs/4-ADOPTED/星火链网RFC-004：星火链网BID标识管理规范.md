@@ -8,11 +8,11 @@
 
 标题：星火链网BID标识管理规范
 
-作者：刘侃，liukan@caict.ac.cn
+作者：金健，[jinjian1@caict.ac.cn](mailto:jinjian1@caict.ac.cn)；谢家贵，[xiejiagui@caict.ac.cn](mailto:xiejiagui@caict.ac.cn)；李志平，[lizhiping@caict.ac.cn](mailto:lizhiping@caict.ac.cn)；张波，[zhangbo3@caict.ac.cn](mailto:zhangbo3@caict.ac.cn)；郭世杰，[guoshijie@caict.ac.cn](mailto:guoshijie@caict.ac.cn)
 
 发布时间：2021-12-09
 
-状态：通过
+状态：采纳
 
 更新时间：2021-12-21
 
@@ -71,8 +71,11 @@ BID标识依托于星火链主子链架构，是一个层次化的模型，由�
 BID的协议元数据为BID文档。BID文档遵循DID Document规范，并在之基础上做了一定的扩展。BID文档字段说明如下：
 
 * @context：必填字段。一组解释JSON-LD文档的规则,遵循DID规范，用于实现不同DID Document的互操作，必须包含 https://www.w3.org/ns/did/v1。
+
 * version：必填字段。文档的版本号，用于文档的版本升级。
+
 * id：必填字段。文档的BID。
+
 * publicKey：选填字段。一组公钥，包含id，type，controller,publicKeyHex四个字段，凭证类的BID文档不包含该字段。
 
     * id:公钥的ID。
@@ -91,7 +94,7 @@ BID的协议元数据为BID文档。BID文档遵循DID Document规范，并在�
 
     * recovery：选填字段。一组公钥id, 在authentication 私钥泄漏或者丢失的情况下用来恢复对文档的控制权。
 
-    * ttl: 缺省值为0。Time-To-Live，即如果解析使用缓存的话缓存生效的时间，单位秒。
+    * ttl: 必填字段。Time-To-Live，即如果解析使用缓存的话缓存生效的时间，单位秒。
 
     * delegateSign: 选填字段。第三方对publicKey的签名，可信解析使用。包括：signer和signatureValue。
 
@@ -100,60 +103,29 @@ BID的协议元数据为BID文档。BID文档遵循DID Document规范，并在�
 
     * type: 必填字段。BID文档的属性类型，取值见附录属性类型。
 
-    * attributes: 必填字段。一组属性，根据文档属性类型不同attributes有不同的字段。
-        * 当type为凭证类型时，属性为可验证声明，结构如下：
-
-            | 字段名 | 描述 |
-            |----| ----|
-            | issuer | 必填。发证者BID |
-            | issuanceDate | 必填。发证日期 |
-            | effectiveDate |	必填。生效日期 |
-            | expirationDate |	必填。失效日期 |
-            | revocationId | 必填。凭证吊销服务地址ID |
-            | templateId |	必填。凭证模板ID |
-            | credentialSubject | 对象，字段见下文 |
-            | proof |  对象，字段见下文 |
-            
-            credentialSubject 对象:
-            
-            | 字段名 | 描述 |
-            |----| ----|
-            | 必填。id | 凭证拥有者的BID |
-            | 必填。type | 凭证类型(数字)。详见附录凭证类型 | 
-            | 选填。name | 被颁发者机构名称 |
-            | 选填。description | 描述 |
-            | 选填。content | 凭证的具体内容，根据模板进行解析 |
-
-            proof 对象：
-
-            | 字段名 | 描述 |
-            |----| ----|
-            | 选填。creator | proof的创建者，这里是一个公钥的id。 |
-            | 选填。signatureValue | 使用相应私钥对attribute内容的签名。 |
-
-        * 当type为其他属性类型时，属性为如下结构：
-
-            | 字段名 | 描述 |
-            |----| ----|
-            | key | 属性的关键字 | 
-            | desc | 选填。属性描述 |
-            | encrypt | 选填。是否加密，0非加密，1加密 |
-            | format | 选填。image、text、video、mixture等数据类型 |
-            | value | 选填。属性自定义value |
-
+    * attributes: 必填字段。一组属性，属性为如下结构：
+        
+        | 字段名 | 描述 |
+        |----| ----|
+        | key | 属性的关键字 | 
+        | desc | 选填。属性描述 |
+        | encrypt | 选填。是否加密，0非加密，1加密 |
+        | format | 选填。image、text、video、mixture等数据类型 |
+        | value | 选填。属性自定义value |
+        
     * acsns:选填字段。一组子链AC号，只有BID文档类型不是凭证类型且文档是主链上的BID文档才可能有该字段，存放当前BID拥有的所有AC号。
-
-    * verifiableCredentials:选填字段。凭证列表，包含id和type两个字段。只有BID文档类型不是凭证类型才可能有该字段。
+    
+    * verifiableCredentials:选填字段。凭证列表，包含id和type两个字段。
         * id:可验证声明的BID。
         * type：凭证类型。详见附录凭证类型。
-
+    
     * service：选填字段。一组服务地址，包括id，type，serviceEndpoint三个必填字段。
         * id: 服务地址的ID。
         * type：字符串，代表服务的类型。取值见附录服务类型。
         * serviceEndpoint：一个URI地址。
-
+    
             当type为子链解析服务时， service为以下结构：
-
+    
             | 字段名 | 描述 |
             | ----- | ---- |
             | id | 服务地址的ID |
@@ -165,7 +137,9 @@ BID的协议元数据为BID文档。BID文档遵循DID Document规范，并在�
             |port | serverType为1时有该字段，解析服务的端口号 |
 
     * created：必填字段。创建时间。
+    
     * updated：必填字段。上次的更新时间。
+    
     * proof：选填字段。文档所有者对文档内容的签名，包括：creator和signatureValue。
         * creator：proof的创建者，这里是一个公钥的id。
         * signatureValue：使用相应私钥对除proof字段的整个BID文档签名。
@@ -725,8 +699,8 @@ BID管理协议基于HTTP/HTTPS通信协议，使用POST方法，参数使用JSO
 |101 |	BID |
 |102 |	其他DID |
 |103 |	域名 |
-|104 |	UID |
-|105 |	HANDLE |
+|104 |	Zid |
+|105 |	handle |
 |…	 | 待扩展 |
 
 #### 6.1.7.2 属性类型

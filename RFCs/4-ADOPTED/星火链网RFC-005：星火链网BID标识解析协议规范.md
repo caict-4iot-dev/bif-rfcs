@@ -8,11 +8,11 @@
 
 标题：星火链网BID标识解析协议规范
 
-作者：魏星，weixing3@caict.ac.cn
+作者：金健，[jinjian1@caict.ac.cn](mailto:jinjian1@caict.ac.cn)；谢家贵，[xiejiagui@caict.ac.cn](mailto:xiejiagui@caict.ac.cn)；李志平，[lizhiping@caict.ac.cn](mailto:lizhiping@caict.ac.cn)；张波，[zhangbo3@caict.ac.cn](mailto:zhangbo3@caict.ac.cn)；郭世杰，[guoshijie@caict.ac.cn](mailto:guoshijie@caict.ac.cn)
 
 发布时间：2021-12-10
 
-状态：通过
+状态：采纳
 
 更新时间：2021-12-10
 
@@ -54,21 +54,17 @@ BID解析是指获取给定BID的BID文档的过程,所有主链上的超级节�
 
 ### 4.3.1 主链解析架构
 
-主链支持解析主链BID文档、子链解析服务地址两类数据。解析主链BID文档分为解析主链普通属性BID文档和解析凭证属性BID文档。解析子链解析服务地址又分为根据带AC号的BID解析子链的解析服务地址和根据子链解析服务BID解析子链的解析服务地址。
+主链支持解析主链BID文档、子链解析服务地址两类数据。解析主链BID文档为解析主链普通属性BID文档。解析子链解析服务地址又分为根据带AC号的BID解析子链的解析服务地址和根据子链解析服务BID解析子链的解析服务地址。
 
 1. 解析主链普通属性BID文档
 
 ![20211210_18](https://user-images.githubusercontent.com/76681420/145541145-1c9b5007-4b91-4623-906b-0d3bcb1632f3.png)
 
-2. 解析主链凭证属性BID文档
-
-![20211210_17](https://user-images.githubusercontent.com/76681420/145541186-618036d5-65b7-4178-83dd-80c3c66813b5.png)
-
-3. 根据带AC号的BID解析子链解析服务地址
+2. 根据带AC号的BID解析子链解析服务地址
 
 <img width="433" alt="2021-12-10_15" src="https://user-images.githubusercontent.com/76681420/145541259-53375e1a-9d93-4a86-b875-5789ed6bfc26.png">
 
-4. 根据子链解析服务BID解析子链的解析服务地址
+3. 根据子链解析服务BID解析子链的解析服务地址
 ![20211210_14](https://user-images.githubusercontent.com/76681420/145541318-40e1c948-3a29-44b4-a387-76720518eb83.png)
 
 ### 4.3.2 子链解析架构
@@ -92,64 +88,45 @@ BID解析是指获取给定BID的BID文档的过程,所有主链上的超级节�
 
 1.  返回普通BID文档：
 
-| 字段名                                                 | 类型          | 说明                                                  |
-| ------------------------------------------------------ | ------------- | ----------------------------------------------------- |
-| errorCode                                              | Int           | 见响应码说明                                          |
-| data.didDocument                                       | Object        | 解析结果                                              |
-| data.didDocument.@context                              | Array         | 一组url数组                                           |
-| data.didDocument.version                               | String        | BID文档的版本                                         |
-| data.didDocument.id                                    | String        | 解析的BID                                             |
-| data.didDocument.publicKey                             | Array(Object) | 公钥                                                  |
-| data.didDocument.publicKey.id                          | String        | 公钥id                                                |
-| data.didDocument.publicKey.type                        | String        | 公钥算法类型                                          |
-| data.didDocument.publicKey.controller                  | String        | 一个BID,表明此公钥的归属                              |
-| data.didDocument.publicKey.publicKeyHex                | String        | 十六进制公钥                                          |
-| data.didDocument.authentication                        | Array         | 一组公钥id                                            |
-| data.didDocument.alsoKnownAs                           | Array(Object) | 关联id                                                |
-| data.didDocument.alsoKnownAs.type                      | Int           | 关联id的类型                                          |
-| data.didDocument.alsoKnownAs.id                        | String        | 关联id                                                |
-| data.didDocument.extension                             | Object        | 扩展字段                                              |
-| data.didDocument.extension.recovery                    | Array         | 一组公钥id                                            |
-| data.didDocument.extension.ttl                         | Long          | 缓存时间，单位秒                                      |
-| data.didDocument.extension.delegateSign                | Object        | 第三方对publicKey的签名，可信解析使用                 |
-| data.didDocument.extension.delegateSign.signer         | String        | 签名公钥id                                            |
-| data.didDocument.extension.delegateSign.signatureValue | String        | 签名的base58编码                                      |
-| data.didDocument.extension.type                        | Int           | 见附录属性类型                                        |
-| data.didDocument.extension.attributes                  | Array(Object) | 一组属性,属性结构见属性结构章节                       |
-| data.didDocument.extension.acsns                       | Array(String) | AC号列表                                              |
-| data.didDocument.extension.verifiableCredentials       | Array(Object) | 凭证列表，，只有主链非凭证类型的BID文档才可能有本字段 |
-| data.didDocument.extension.verifiableCredentials.id    | String        | 凭证ID                                                |
-| data.didDocument.extension.verifiableCredentials.type  | Int           | 凭证类型                                              |
-| data.didDocument.service                               | Array(Object) | 一组服务地址，结构见下表                              |
-| data.didDocument.service.id                            | String        | 服务地址的ID                                          |
-| data.didDocument.service.type                          | String        | 字符串，代表服务的类型                                |
-| data.didDocument.service.serviceEndpoint               | String        | 服务的URL地址                                         |
-| data.didDocument.created                               | String        | 创建时间                                              |
-| data.didDocument.updated                               | String        | 上次的更新时间                                        |
-| data.didDocument.proof                                 | Object        | 签名信息                                              |
-| data.didDocument.proof.creator                         | String        | 签名公钥id                                            |
-| data.didDocument.proof.signatureValue                  | String        | 签名的base58编码                                      |
+| 字段名                                                 | 类型          | 说明                                                |
+| ------------------------------------------------------ | ------------- | --------------------------------------------------- |
+| errorCode                                              | Int           | 见响应码说明                                        |
+| data.didDocument                                       | Object        | 解析结果                                            |
+| data.didDocument.@context                              | Array         | 一组url数组                                         |
+| data.didDocument.version                               | String        | BID文档的版本                                       |
+| data.didDocument.id                                    | String        | 解析的BID                                           |
+| data.didDocument.publicKey                             | Array(Object) | 公钥                                                |
+| data.didDocument.publicKey.id                          | String        | 公钥id                                              |
+| data.didDocument.publicKey.type                        | String        | 公钥算法类型                                        |
+| data.didDocument.publicKey.controller                  | String        | 一个BID,表明此公钥的归属                            |
+| data.didDocument.publicKey.publicKeyHex                | String        | 十六进制公钥                                        |
+| data.didDocument.authentication                        | Array         | 一组公钥id                                          |
+| data.didDocument.alsoKnownAs                           | Array(Object) | 关联id                                              |
+| data.didDocument.alsoKnownAs.type                      | Int           | 关联id的类型                                        |
+| data.didDocument.alsoKnownAs.id                        | String        | 关联id                                              |
+| data.didDocument.extension                             | Object        | 扩展字段                                            |
+| data.didDocument.extension.recovery                    | Array         | 一组公钥id                                          |
+| data.didDocument.extension.ttl                         | Long          | 缓存时间，单位秒                                    |
+| data.didDocument.extension.delegateSign                | Object        | 第三方对publicKey的签名，可信解析使用               |
+| data.didDocument.extension.delegateSign.signer         | String        | 签名公钥id                                          |
+| data.didDocument.extension.delegateSign.signatureValue | String        | 签名的base58编码                                    |
+| data.didDocument.extension.type                        | Int           | 见附录属性类型                                      |
+| data.didDocument.extension.attributes                  | Array(Object) | 一组属性,属性结构见属性结构章节                     |
+| data.didDocument.extension.acsns                       | Array(String) | AC号列表                                            |
+| data.didDocument.extension.verifiableCredentials       | Array(Object) | 凭证列表，只有主链非凭证类型的BID文档才可能有本字段 |
+| data.didDocument.extension.verifiableCredentials.id    | String        | 凭证ID                                              |
+| data.didDocument.extension.verifiableCredentials.type  | Int           | 凭证类型                                            |
+| data.didDocument.service                               | Array(Object) | 一组服务地址，结构见下表                            |
+| data.didDocument.service.id                            | String        | 服务地址的ID                                        |
+| data.didDocument.service.type                          | String        | 字符串，代表服务的类型                              |
+| data.didDocument.service.serviceEndpoint               | String        | 服务的URL地址                                       |
+| data.didDocument.created                               | String        | 创建时间                                            |
+| data.didDocument.updated                               | String        | 上次的更新时间                                      |
+| data.didDocument.proof                                 | Object        | 签名信息                                            |
+| data.didDocument.proof.creator                         | String        | 签名公钥id                                          |
+| data.didDocument.proof.signatureValue                  | String        | 签名的base58编码                                    |
 
-当文档属性为凭证类型时，attributes结构如下：
-
-| 字段名                                                       | 类型          | 说明                              |
-| ------------------------------------------------------------ | ------------- | --------------------------------- |
-| data.didDocument.extension.attributes.issuer                 | String        | 发证者BID                         |
-| data.didDocument.extension.attributes.issuanceDate           | String        | 发证日期                          |
-| data.didDocument.extension.attributes.effectiveDate          | String        | 生效日期                          |
-| data.didDocument.extension.attributes.expirationDate         | String        | 失效日期                          |
-| data.didDocument.extension.attributes.revocationId           | String        | 凭证吊销服务地址ID                |
-| data.didDocument.extension.attributes.credentialSubject      | Object        | 凭证主体                          |
-| data.didDocument.extension.attributes.credentialSubject.id   | String        | 凭证拥有者的BID                   |
-| data.didDocument.extension.attributes.credentialSubject.type | int           | 凭证类型                          |
-| data.didDocument.extension.attributes.credentialSubject.name | String        | 被颁发者机构名称                  |
-| data.didDocument.extension.attributes.credentialSubject.description | String        | 描述                              |
-| data.didDocument.extension.attributes.content                | Object        | 凭证的具体内容，根据模板进行解析  |
-| data.didDocument.extension.attributes.proof                  | Array(Object) | 签名证明                          |
-| data.didDocument.extension.attributes.proof.creator          | String        | proof的创建者，这里是一个公钥的id |
-| data.didDocument.extension.attributes.proof.signatureValue   | String        | 使用相应私钥对凭证内容的签名      |
-
-当文档属性为其他类型时，attributes结构如下：
+其中attributes结构如下：
 
 | 字段名                                        | 类型   | 说明                                  |
 | --------------------------------------------- | ------ | ------------------------------------- |
@@ -161,8 +138,9 @@ BID解析是指获取给定BID的BID文档的过程,所有主链上的超级节�
 
 当service.type为子链解析服务时,service结构如下：
 
-| data.didDocument.service.id              | String | 服务地址的ID              |
+| 字段名                                   | 类型   | 说明                      |
 | ---------------------------------------- | ------ | ------------------------- |
+| data.didDocument.service.id              | String | 服务地址的ID              |
 | data.didDocument.service.type            | String | 字符串，代表服务的类型    |
 | data.didDocument.service.version         | String | 解析服务支持的BID协议版本 |
 | data.didDocument.service.protocol        | Int    | 解析服务支持的传输协议    |
@@ -200,11 +178,7 @@ BID解析是指获取给定BID的BID文档的过程,所有主链上的超级节�
             "service": [{
                 "id": "did:bid:ef24NBA7au48UTZrUNRHj2p3bnRzF3YCH#subResolve",
                 "type": "DIDSubResolve",
-                "version": "1.0.0",
-                "serverType": 1,
-                "protocol": 3,
-                "serviceEndpoint": "192.168.1.23",
-                "port": 8080
+                "serviceEndpoint": "www.caict.cn"
             }],
            "created": "2021-05-10T06:23:38Z",
            "updated": "2021-05-10T06:23:38Z",
@@ -218,7 +192,7 @@ BID解析是指获取给定BID的BID文档的过程,所有主链上的超级节�
 }
 ```
 
-2. 成功返回凭证属性BID文档示例：
+2. 成功返回包含子链解析服务地址的BID文档示例：
 
 ```json
 {
@@ -230,80 +204,7 @@ BID解析是指获取给定BID的BID文档的过程,所有主链上的超级节�
                 "https://www.w3.org/ns/did/v1"
             ],
             "version": "1.0.0",
-            "id": "did:bid:efnVUgqQFfYeu97ABf6sGm3WFtVXHZB2",
-            "publicKey": [
-                {
-                    "id": "did:bid:efnVUgqQFfYeu97ABf6sGm3WFtVXHZB2#key-1",
-                    "type": "Ed25519",
-                    "controller": "did:bid:efnVUgqQFfYeu97ABf6sGm3WFtVXHZB2",
-                    "publicKeyHex": "b9906e1b50e81501369cc777979f8bcf27bd1917d794fa6d5e320b1ccc4f48bb"
-                }
-            ],
-            "authentication": [
-                "did:bid:efnVUgqQFfYeu97ABf6sGm3WFtVXHZB2#key-1"
-            ],
-            "extension": {
-                "recovery": [
-                    "did:bid:efnVUgqQFfYeu97ABf6sGm3WFtVXHZB2#key-2"
-                ],
-                "ttl": 86400,
-                "delegateSign ": {
-                    "signer": "did:bid:efJgt44mNDewKK1VEN454R17cjso3mSG#key-1",
-                    "signatureValue": "eyJhbGciOiJSUzI1NiIsImI2NCI6ZmFsc2UsImNyaXQiOlsiYjY0Il19"
-                },
-                "type": 205,
-                "attributes": [
-                    {
-                        "issuer": "did:bid:efJgt44mNDewKK1VEN454R17cjso3mSG",
-                        "issuanceDate": "2021-01-20T12:01:20Z",
-                        "effectiveDate": "2021-01-20T12:01:20Z",
-                        "expirationDate": "2021-04-02T12:01:20Z",
-                        "revocationId": "did:bid:efJgt44mNDewKK1VEN454R17cjso3mSG#revocation",
-                        "credentialSubject": {
-                            "id": "did:bid:efJgt44mNDewKK1VEN454R17cjso3mSG",
-                            "type": 202,
-                            "name": "北京大学",
-                            "content": { }
-                        },
-                        "proof": [
-                            {
-                                "creator": "did:bid:efJgt44mNDewKK1VEN454R17cjso3mSG#key-1",
-
-                                "signatureValue": "9E07CD62FE6CE0A843497EBD045C0AE9FD6E1845414D0ED251622C66D9CC927CC21DB9C09DFF628DC042FCBB7D8B2B4901E7DA9774C20065202B76D4B1C15900"
-                            }
-                        ]
-                    }
-                ]
-            },
-            "service": [
-                {
-                    "id": "did:bid:ef24NBA7au48UTZrUNRHj2p3bnRzF3YCH#revocation",
-                    "type": " DIDRevocation",
-                    "serviceEndpoint": "https://did.bif.com"
-                }
-            ],
-            "proof": {
-                "creator": "did:bid:efJgt44mNDewKK1VEN454R17cjso3mSG#key-1",
-                "signatureValue": " eyJhbGciOiJSUzI1NiIsImI2NCI6ZmFsc2UsImNyaXQiOlsiYjY0Il19"
-            }
-        }
-    }
-}
-```
-
-3. 成功返回包含子链解析服务地址的BID文档示例：
-
-```json
-{
-    "errorCode": 0,
-    "message": "success",
-    "data": {
-        "didDocument": {
-            "@context": [
-                "https://www.w3.org/ns/did/v1"
-            ],
-            "version": "1.0.0",
-            "id": "did:bid:efnVUgqQFfYeu97ABf6sGm3WFtVXHZB2",
+            "id": "did:bid:1234",
             "publicKey": [
                 {
                     "id": "did:bid:efnVUgqQFfYeu97ABf6sGm3WFtVXHZB2#key-1",
@@ -338,7 +239,8 @@ BID解析是指获取给定BID的BID文档的过程,所有主链上的超级节�
                 }
             ],
             "proof": {
-                "creator": "did:bid:efJgt44mNDewKK1VEN454R17cjso3mSG#key-1",                "signatureValue": " eyJhbGciOiJSUzI1NiIsImI2NCI6ZmFsc2UsImNyaXQiOlsiYjY0Il19"
+                "creator": "did:bid:efJgt44mNDewKK1VEN454R17cjso3mSG#key-1",
+                "signatureValue": " eyJhbGciOiJSUzI1NiIsImI2NCI6ZmFsc2UsImNyaXQiOlsiYjY0Il19"
             }
         }
     }
@@ -499,41 +401,7 @@ BID解析协议还支持解析BID文档里的某些字段，支持解析publicKe
 | data.id          | String        | 解析的BID                        |
 | data..attributes | Array(Object) | 属性                             |
 
-
-
 成功返回证书属性示例：
-
-```json
-{
-    "errorCode": 0,
-    "message": "success",
-    "data": {
-        "version": "1.0.0",
-        "id": "did:bid:efnVUgqQFfYeu97ABf6sGm3WFtVXHZB2",
-        "attributes": [{
-            "issuer": "did:bid:efJgt44mNDewKK1VEN454R17cjso3mSG",
-            "issuanceDate": "2021-01-20T12:01:20Z",
-            "effectiveDate": "2021-01-20T12:01:20Z",
-            "expirationDate": "2021-04-02T12:01:20Z",
-            "revocationId": "did:bid:efJgt44mNDewKK1VEN454R17cjso3mSG#revocation",
-            "credentialSubject": {
-                "id": "did:bid:efJgt44mNDewKK1VEN454R17cjso3mSG",
-                "type": 202,
-                "name": "北京大学",
-                "description": "",
-                "context":{}
-            },
-            "proof": [{
-                "creator": "did:bid:efJgt44mNDewKK1VEN454R17cjso3mSG#key-1",
-
-                "signatureValue": "9E07CD62FE6CE0A843497EBD045C0AE9FD6E1845414D0ED251622C66D9CC927CC21DB9C09DFF628DC042FCBB7D8B2B4901E7DA9774C20065202B76D4B1C15900"
-            }]
-        }]
-    }
-}
-```
-
-成功返回其他属性示例：
 
 ```json
 {
@@ -600,7 +468,6 @@ BID解析协议还支持解析BID文档里的某些字段，支持解析publicKe
         "acsns": [
             "abcd",
             "1234"
-
            ]
     }
 }
@@ -740,7 +607,7 @@ BID解析协议还支持解析BID文档里的某些字段，支持解析publicKe
     "message": "success",
     "data": {
         "version": "1.0.0",
-        "id": "did:bid:efnVUgqQFfYeu97ABf6sGm3WFtVXHZB2",
+        "id": "did:bid:1234",
         "service": {
             "id": "did:bid:ef24NBA7au48UTZrUNRHj2p3bnRzF3YCH#subresolve",
             "type": "DIDSubResolve",
@@ -776,8 +643,6 @@ BID解析协议还支持解析BID文档里的某些字段，支持解析publicKe
 
 BID标识依托于星火链主子链架构，是一个层次化的模型，由主链和子链组成。BID解析时通过递归解析系统，先到主链解析有子链解析服务地址的BID文档，再到子链查询具体的BID文档。
 
-#### 5.3.1  递归解析
-
 递归解析为通过递归解析服务迭代查询BID文档的过程，解析接口和BID解析保持一致。
 
 <img width="497" alt="2021-12-10_12" src="https://user-images.githubusercontent.com/76681420/145542643-9ab0e27a-ed9f-4526-b675-64dbbe1ff1ec.png">
@@ -796,8 +661,7 @@ BID标识依托于星火链主子链架构，是一个层次化的模型，由�
 
 6） 递归解析系统将解析结果返回给用户
 
-
-#### 5.3.2  可信解析
+## 5.4 可信解析
 
 可信解析主要是对BID文档的公钥和签名内容进行可信验证，遵循DPKI规范，在整个星火链网内存在多个为普通BID 文档publickKey签名认证的认证BID,保证数据来源的可靠性，确保递归解析过程中每个经过的解析服务都是可信的。BID递归解析系统需要实现此接口，在递归解析的过程中，确保中间解析服务地址没有被篡改。
 
@@ -805,11 +669,7 @@ BID标识依托于星火链主子链架构，是一个层次化的模型，由�
 
 <img width="305" alt="2021-12-10_11" src="https://user-images.githubusercontent.com/76681420/145542905-904f1806-782b-41cb-b818-0c44f66ad182.png">
 
-
 **2.**   **可信解析流程**
-![image-20211210151034467](https://user-images.githubusercontent.com/76681420/145542965-955981a1-8a31-4e14-bdbc-eb244a27c99c.png)
-
-
 
 
 ![image-20211210151123166](https://user-images.githubusercontent.com/76681420/145543013-1ff3fa6d-f018-4209-912e-59dac7d294d3.png)
@@ -847,11 +707,19 @@ BID标识依托于星火链主子链架构，是一个层次化的模型，由�
 }
 ```
 
+## 5.4 二进制解析协议
+
+本次只支持文本解析协议，二进制解析协议会在后续的版本中加入，敬请期待。
+
+## 5.5 响应码说明
+
+响应码说明参见[星火链网RFC-004：星火链网BID标识管理规范](星火链网RFC-004：星火链网BID标识管理规范.md#bid)中的响应码说明。
 
 
-## 5.4 签名算法
 
-### 5.4.1  约束条件
+## 5.6 签名算法
+
+### 5.6.1  约束条件
 
 要序列化的bid数据(尤其是extension字段)必须适用于 I‑JSON [ [RFC7493](https://www.rfc-editor.org/rfc/rfc8785#RFC7493) ] 格式，这意味着以下内容：
 
@@ -863,7 +731,7 @@ BID标识依托于星火链主子链架构，是一个层次化的模型，由�
 
 
 
-### 5.4.2  签名规则
+### 5.6.2  签名规则
 
 + 基本数据类型处理
 
@@ -891,61 +759,19 @@ BID标识依托于星火链主子链架构，是一个层次化的模型，由�
 
 
 
-### 5.4.3  签名步骤
+### 5.6.3  签名步骤
 
-1)  将需要签名的凭证或者BID文档数据，去掉proof数据后按照规则进行排序。
+1)  将需要签名的凭证或者BID文档数据，去掉proof数据后按照规则进行排序；
 
-2)  压缩处理排序后的数据形成待签名字节数据（UTF-8字符集）。
+2)  压缩处理排序后的数据形成待签名字节数据（UTF-8字符集）；
 
-3)  使用私钥对待签名字节数据进行签名
+3)  使用私钥对待签名字节数据进行签名；
 
-4)  对签名数据进行Base58编码，生成signatureValue数据
+4)  对签名数据进行Base58编码，生成signatureValue数据。
 
-### 5.4.4  示例
+### 5.6.4  示例
 
-##### 5.4.4.1 凭证签名
-
-源数据：
-
-```json
-{
-    "issuer": "did:bid:efJgt44mNDewKK1VEN454R17cjso3mSG",
-    "issuanceDate": "2021-01-20T12:01:20Z",
-    "effectiveDate": "2021-01-20T12:01:20Z",
-    "expirationDate": "2021-04-02T12:01:20Z",
-    "revocationId": "did:bid:efJgt44mNDewKK1VEN454R17cjso3mSG#revocation",
-    "credentialSubject": {
-        "id": "did:bid:efJgt44mNDewKK1VEN454R17cjso3mSG",
-        "type": 202,
-        "name": "asc",
-        "content": {"registerCapital":"1000.0","status":"2" }
-    },
-    "proof": [
-        {
-            "creator": "did:bid:ef18F9AVK4SQLZPRrPkrVWwp9kbpdXHx#key-1",
-            "signatureValue": "4TWzvxXDgejyWK7syUeg68WFd6Kf5cGV8bnEYR35UaKX18VRwemnnBuuGkMHGrSP2qbDac9WwhTffLQhyzz2Vp5m"
-        }
-    ]
-}
-```
-
-排序：
-
-```json
-{"credentialSubject":{"content":{"registerCapital":"1000.0","status":"2"},"id":"did:bid:efJgt44mNDewKK1VEN454R17cjso3mSG","name":"asc","type":202},"effectiveDate":"2021-01-20T12:01:20Z","expirationDate":"2021-04-02T12:01:20Z","issuanceDate":"2021-01-20T12:01:20Z","issuer":"did:bid:efJgt44mNDewKK1VEN454R17cjso3mSG","revocationId":"did:bid:efJgt44mNDewKK1VEN454R17cjso3mSG#revocation"}
-```
-
-签名：
-
-使用测试私钥priSPKp8oiiAXGZaXFBMKEAoL2b6J6UDQCw4x39ereXYtyAejM，运用Ed25519算法计算待签名字节数据(排序后的数据转为字节)并Base58编码。
-
-```
-4TWzvxXDgejyWK7syUeg68WFd6Kf5cGV8bnEYR35UaKX18VRwemnnBuuGkMHGrSP2qbDac9WwhTffLQhyzz2Vp5m
-```
-
-
-
-##### 5.4.4.2 BID文档签名
+##### 5.6.4.1 BID文档签名
 
 源数据：
 
@@ -975,8 +801,8 @@ BID标识依托于星火链主子链架构，是一个层次化的模型，由�
 		"type": "Ed25519"
 	}],
 	"proof": {
-		"creator": "did:bid:ef18F9AVK4SQLZPRrPkrVWwp9kbpdXHx #key-1",
-		"signatureValue": " 5jFX6UKMVTg73LCWamNdeZACCMftMjSrJvZpL86ULefr3216SKRfgH6YkrmHT5DACYSpVEeN9RcnNES8cAHBVsMw"
+		"creator": "did:bid:ef18F9AVK4SQLZPRrPkrVWwp9kbpdXHx#key-1",
+		"signatureValue": "5jFX6UKMVTg73LCWamNdeZACCMftMjSrJvZpL86ULefr3216SKRfgH6YkrmHT5DACYSpVEeN9RcnNES8cAHBVsMw"
 	},
 	"version": "1.1.0"
 }
@@ -1000,6 +826,7 @@ BID标识依托于星火链主子链架构，是一个层次化的模型，由�
 
 
 # 6. 实现
+
 ## 6.1 分布式数字身份认证
 
 车管所、交管局等在星火链上有自己的身份信息BID，用户购买车以后也会在星火链上注册汽车的身份信息BID，车管所、交管局等给汽车颁发允许其上路正常行驶所需的凭证，汽车将凭证也上传到星火链上。汽车上路的时候，监控拍摄到汽车的BID， 通过BID递归解析到汽车的凭证，再通过BID递归解析到颁发凭证的车管所、交管局的数字身份信息，从而验证汽车的凭据的有效性，实现智能设备的交互。
