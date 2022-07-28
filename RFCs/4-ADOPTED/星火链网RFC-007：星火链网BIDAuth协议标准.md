@@ -8,11 +8,11 @@
 
 标题：星火链网BIDAuth协议标准
 
-作者：魏星，weixing3@caict.ac.cn
+作者：金健，[jinjian1@caict.ac.cn](mailto:jinjian1@caict.ac.cn)；谢家贵，[xiejiagui@caict.ac.cn](mailto:xiejiagui@caict.ac.cn)；李志平，[lizhiping@caict.ac.cn](mailto:lizhiping@caict.ac.cn)；马若龙，[maruolong@caict.ac.cn](mailto:maruolong@caict.ac.cn)；郭世杰，[guoshijie@caict.ac.cn](mailto:guoshijie@caict.ac.cn)
 
 发布时间：2021-12-08
 
-状态：通过
+状态：采纳
 
 更新时间：2021-12-09
 
@@ -41,7 +41,7 @@ BIDComm提供了节点之间的交互，在交互之前，节点之间需要相�
 
 ## 4.2 BIDAuth介绍
 
-BIDAuth描述了用户对某数字身份DID拥有控制权，用户只需证明自己拥有该数字身份对应的私钥，可以使用私钥解密出该数字身份对应的公钥所加密的密文。
+BIDAuth描述了用户对某数字身份BID拥有控制权，用户只需证明自己拥有该数字身份对应的私钥，可以使用私钥解密出该数字身份对应的公钥所加密的密文。
 
 经过BIDAuth认证之后，不同数字身份之间建立通信通道，并且在此基础上进行授权、可验证凭据等功能实现。
 
@@ -65,7 +65,7 @@ Authentication：身份验证，身份所有者向验证方证明它对BID拥有
 
 ## 4.4 BIDAuth整体流程
 
-两个BID身份之间进行交互时，第一步需要进行相互的认证；认证的过程定义为bidAuth，依赖于“ 挑战-响应”方式。
+两个BID身份之间进行交互时，第一步需要进行相互的认证；认证的过程定义为BIDAuth，依赖于“ 挑战-应答”方式。
 
 下图是BIDAuth 序列图：
 <img width="492" alt="954778" src="https://user-images.githubusercontent.com/76681420/145170809-6007a25b-7b27-4c89-b9fe-7ec8489e4501.png">

@@ -8,11 +8,11 @@
 
 标题：星火链网BIDComm协议标准
 
-作者：马若龙，maruolong@caict.ac.cn
+作者：金健，[jinjian1@caict.ac.cn](mailto:jinjian1@caict.ac.cn)；谢家贵，[xiejiagui@caict.ac.cn](mailto:xiejiagui@caict.ac.cn)；李志平，[lizhiping@caict.ac.cn](mailto:lizhiping@caict.ac.cn)；马若龙，[maruolong@caict.ac.cn](mailto:maruolong@caict.ac.cn)；张波，[zhangbo3@caict.ac.cn](mailto:zhangbo3@caict.ac.cn)
 
 发布时间：2021-11-24
 
-状态：通过
+状态：采纳
 
 更新时间：2021-12-10
 
@@ -26,7 +26,7 @@
 
 # 3. 动机
 
-在基于星火链网标识符BID的交互，需要一套标准的通信协议，描述通信双方如何以BID为数据载体，进行数据交互和信息通信。同时，基于该标准协议，BID的基本认证流程（BIDAuth）、可验证证书（BID-VC）等交互流程的规范流程同样需要定义。因此，本RFC定义BIDComm协议标准和交互流程。
+在基于星火链网标识符BID的交互，需要一套标准的通信协议，描述通信双方如何以BID为数据载体，进行数据交互和信息通信。同时，基于该标准协议，BID的基本认证流程（BIDAuth）、可信证书（BID-VC）等交互流程的规范流程同样需要定义。因此，本RFC定义BIDComm协议标准和交互流程。
 
 # 4. 原理
 
@@ -58,7 +58,7 @@ BIDComm的设计目标为：
 
 - 可互操作
 
-- 以传输方式无关
+- 与传输方式无关
 
 - 可扩展性
 
@@ -175,7 +175,7 @@ SM4规范：[https://datatracker.ietf.org/doc/html/draft-crypto-sm4-00](https://
 
 > 图 4-6 加密信封结构图
 
-![image](https://user-images.githubusercontent.com/90955034/145359726-c74973b0-067f-4a2c-bdae-b1a1844e6101.png)
+![image](https://https://user-images.githubusercontent.com/90955034/178213404-2ca761d4-3580-4e91-b4b1-e11e42c907e0.png)
 
 - 加密信封消息头：描述消息加密使用的非对称加密算法和对称加密算法；
 
@@ -217,33 +217,27 @@ BIDComm签名流程如图5-1所示。
 流程图描述：
 
 1. 请求方根据业务需求生成消息明文；
-
 2. 生成签名信封消息头，定义签名算法以及本方签名公钥；
-
-3. 使用非对称加密私钥对消息明文进行签名；
-
-4. 若是有多个签名，重复2-3步骤；
-
-5. 组织生成签名信封数据结构，加密信封封装后发送或直接发送；
-
-6. 接收方根据发送方的BID，从星火链上解析出该BID对应的BID文档；
-
-7. 从BID文档中取出发送方的公钥，与签名信封中的公钥进行对比；
-
+3. 生成payload：对“明文”进行Base64编码；
+4. 使用非对称加密私钥对payload进行签名；
+5. 若是有多个签名，重复2-3步骤；
+6. 组织生成签名信封数据结构，加密信封封装后发送或直接发送；
+7. 接收方根据发送方的BID，从星火链上解析出该BID对应的BID文档；
+8. 从BID文档中取出发送方的公钥，与签名信封中的公钥进行对比；
 8. 使用发送方公钥验证签名。
 
 ### 5.1.2.  签名信封字段规范
 
 根据[签名信封结构](#jump4-1)设计的签名信封结构，设计以下字段，对应相应的结构层级，给出编码方式。
 
-| 字段名     | 子字段 | 子字段 | 结构层级       | 描述                 | 编码方式   |
-| ---------- | ------ | ------ | -------------- | -------------------- | ---------- |
-| signatures |        |        | 多重签名       | 多重签名数组结构     | JSON数组   |
-| signatures | header |        | 签名信封消息头 | 消息头结构           | JSON元素   |
-| signatures | header | alg    | 签名算法       | 签名使用的算法       | 字符串     |
-| signatures | header | kid    | 签名公钥       | 签名使用的公钥       | 字符串     |
-| signature  |        |        | 签名值         | 对消息明文的签名     | 签名密文   |
-| payload    |        |        | 签名原文       | 消息明文编码后的数据 | Base64编码 |
+| 字段名     | 子字段    | 子字段 | 结构层级        | 描述                 | 编码方式   |
+| ---------- | --------- | ------ | --------------- | -------------------- | ---------- |
+| signatures |           |        | 多重签名        | 多重签名数组结构     | JSON数组   |
+| signatures | header    |        | 签名信封消息头  | 消息头结构           | JSON元素   |
+| signatures | header    | alg    | 签名算法        | 签名使用的算法       | 字符串     |
+| signatures | header    | kid    | 签名BID的公钥id | 签名BID的公钥id      | 字符串     |
+| signatures | signature |        | 签名值          | 对payload的签名      | 签名密文   |
+| payload    |           |        | 签名原文        | 消息明文编码后的数据 | Base64编码 |
 
 BIDComm签名信封示例：
 
@@ -253,10 +247,10 @@ BIDComm签名信封示例：
 	"signatures":[
 	{
 		"header":{
-		"alg": "SM2",
-		"kid": "did:bid:zf27zkk8D72F13HAzY1ECsK12VPUHxKZS#keys-1",
-	}
-	"signature":"FW33NnvOHV0Te…WNMgP2EVCQ",
+            "alg": "SM2",
+            "kid": "did:bid:zf27zkk8D72F13HAzY1ECsK12VPUHxKZS#keys-1"
+		}，
+		"signature":"FW33NnvOHV0Te…WNMgP2EVCQ"
 	}],
 	"payload": "eyJpZCI6IjEyMzQ1Njc4O…aXRzIHZhbHVlIn19"
 }
@@ -315,16 +309,15 @@ BIDComm加密流程如图5-2所示。
 
 根据[加密信封结构](#jump4-2)设计的加密信封结构，设计以下字段，对应相应的结构层级，给出编码方式。
 
-| 字段名     | 子字段        | 结构层级                     | 描述                         | 编码方式   |
-| ---------- | ------------- | ---------------------------- | ---------------------------- | ---------- |
-| header     |               | 加密信封消息头               | 消息头结构                   | JSON元素   |
-| header     | alg           | 非对称加密算法               | 加密使用的算法               | 字符串     |
-| header     | enc           | 对称加密算法                 | 加密使用的算法               | 字符串     |
-| recipients | 收件人列表    | 收件人列表                   | 收件人数组结构               | JSON数组   |
-| recipients | encrypted key | 对称加密密钥的非对称加密密文 | 对称加密密钥的非对称加密密文 | 字符串     |
-| recipients | kid           | 接收人公钥                   | 非对称加密使用的接收人公钥   | 字符串     |
-| iv         |               | 随机向量                     | 生成密钥的随机向量           | Base64编码 |
-| ciphertext |               | 对称加密密文                 | 对称加密后的密文数据         | 加密密文   |
+| 字段名     | 子字段        | 结构层级                     | 描述                              | 编码方式 |
+| ---------- | ------------- | ---------------------------- | --------------------------------- | -------- |
+| header     |               | 加密信封消息头               | 消息头结构                        | JSON元素 |
+| header     | alg           | 非对称加密算法               | 加密使用的算法                    | 字符串   |
+| header     | enc           | 对称加密算法                 | 加密使用的算法                    | 字符串   |
+| recipients | 收件人列表    | 收件人列表                   | 收件人数组结构                    | JSON数组 |
+| recipients | encrypted key | 对称加密密钥的非对称加密密文 | 对称加密密钥的非对称加密密文      | 字符串   |
+| recipients | kid           | 接收人BID的公钥id            | 非对称加密使用的接收人BID的公钥id | 字符串   |
+| ciphertext |               | 对称加密密文                 | 对称加密后的密文数据              | 加密密文 |
 
 BIDComm加密信封示例： 
 
@@ -343,7 +336,6 @@ BIDComm加密信封示例：
 		"encrypted_key":"sOjs0A0typIRSsh…….qPnoJ3iCOr",
 		"kid":"did:bid:zf27zkk8D72F13HAzY1ECsK12VPUHxKZS#keys-2"
 	}],
-	"iv":"X183OV9QdjYtZmc=",
 	"ciphertext":"WCufCs2lMZfkxQ0……F_HDR60Jaiw"
 }
 
@@ -396,7 +388,6 @@ BIDComm加密信封示例：
 		"encrypted_key":"ZIL6Leligq1Xp……KkGgODG",
 		"kid":"did:bid:zf27zkk8D72F13HAzY1ECsK12VPUHxKZS#keys-1"
 	}],
-	"iv":"X183OV9QdjYtZmc=",
 	"ciphertext":"WCufCs2lMZfkxQ0……F_HDR60Jaiw"
 }
 ```
@@ -427,20 +418,13 @@ BIDComm加密信封示例：
 
 ![image](https://user-images.githubusercontent.com/90955034/145359873-75bdf5f4-5da0-4b60-801d-6d5667549729.png)
 
-1. 使用发送方私钥对该明文进行签名；
-
-2. 生成明文Base64编码后的`payload`；
-
+1. 生成payload：“明文”的Base64编码
+2. 生成签名：使用发送方私钥对payload进行签名；
 3. 生成签名信封；
-
 4. 生成签名信封数据密文`ciphertext`；
-
 5. 生成加密信封，完成消息明文、签名信封、加密信封的嵌套；
-
 6. 当接收方收到消息后，首先从加密信封中根据`ciphertext`获取到签名信封数据；
-
 7. 根据签名信封中的`payload`和发送方公钥对`signature`签名进行验证；验证通过后，代表`payload`真实有效；
-
 8. 解码`payload`，解析消息明文。
 
 #### 5.2.3.2.   不可验证私有消息

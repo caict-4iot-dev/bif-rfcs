@@ -8,11 +8,11 @@
 
 标题：星火链网BID可信证书协议标准
 
-作者：刘侃，liukan@caict.ac.cn
+作者：金健，[jinjian1@caict.ac.cn](mailto:jinjian1@caict.ac.cn)；谢家贵，[xiejiagui@caict.ac.cn](mailto:xiejiagui@caict.ac.cn)；李志平，[lizhiping@caict.ac.cn](mailto:lizhiping@caict.ac.cn)；郭世杰，[guoshijie@caict.ac.cn](mailto:guoshijie@caict.ac.cn)；马若龙，[maruolong@caict.ac.cn](mailto:jinjian1@caict.ac.cn)
 
 发布时间：2021-11-24
 
-状态：通过
+状态：采纳
 
 更新时间：2021-12-14
 
@@ -435,7 +435,7 @@ BID结合区块链可以提供一个安全强大的去中心化解决方案，BI
 
     * 内嵌数字证书，直接给出对应证书的jws token
 
-    * 内嵌数字证书原文，格式见可信数字证书格式，另外必须增加proof字段，内容是证书放行方对可信证书的签名：
+    * 内嵌数字证书原文，格式见可信数字证书格式，另外必须增加proof字段，内容是证书发行方对可信证书的签名：
 
         * type 签名算法
         * created 签名时间
