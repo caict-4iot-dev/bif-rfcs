@@ -120,6 +120,10 @@ BIF-Core内置了星火标识（BID，Blockchain-based IDentifier），为人、
 
 1. 用户与发行方申请证书的流程
 2. 用户提交证书前与验证方的沟通流程
+3. **本协议**未规定交互流程中如何去识别用户id, 例如证书依赖方或者验证方在接收用户提交的可信声明时, 如何确认当前交互用户即为证书主体用户bid, 建议的解决方案如下:
+   1. 具体业务使用时, 增加前置auth环节, 通过签名验证用户bid后, 用户在当前对话session内保持该bid不变.
+
+   1. 每次信息交互外部都套一层签名验证, 用来识别用户bid.
 
 ## 5.2 星火联网基于BID的可信证书协议
 
@@ -140,6 +144,7 @@ BID结合区块链可以提供一个安全强大的去中心化解决方案，BI
 证书发布方发布给特定主体的资质数字证明文件，发证方用BID公钥对应私钥对证书内容签名认证。
 
 证书可以存在星火链上通过唯一标识引用，也可以内嵌在可信声明中。
+
 证书的保存可以由证书主体自己管理，也可以委托给第三方管理。
 
 #### 5.2.1.3 证书验证请求
@@ -197,7 +202,7 @@ BID结合区块链可以提供一个安全强大的去中心化解决方案，BI
 
 实际应用时，持有方可以通过deeplink调用证书管理app或者转发给证书管理机构来处理验证请求。
 
-验证申请里也标明了验证方目前能支持的声明构造方式，如直接方式（证书内容直接构成声明内容），或者基于隐私保护考虑，基于各种零知识证明方案的构造方式（参见[附录](#jump6.5.5)）。
+验证申请里也标明了验证方目前能支持的声明构造方式，如直接方式（证书内容直接构成声明内容），或者基于隐私保护考虑，基于各种零知识证明方案的构造方式（参见[可信声明推断](#jump6.5.5)）。
 
 #### 5.2.2.4 构造可信声明
 
@@ -272,7 +277,8 @@ BID结合区块链可以提供一个安全强大的去中心化解决方案，BI
             ]
         }
     },
-    "revocationId":"20100101NN30d398"
+    "revocationId": "20100101NN30d398",
+    "parseType": "sel-disclose-SM2"
 }
 ```
 
@@ -288,11 +294,11 @@ BID结合区块链可以提供一个安全强大的去中心化解决方案，BI
 * validBefore: 证书有效期截止时间。
 * credentialSubject: 证书内容，包含一个必须字段id，其余字段根据协议具体的template变动。
 * revocationId: 凭证撤销查询地址，验证方可以在可信公开数据集查询该证书是否被撤销。
+* parseType : 证书解析方式，详情参见[可信声明推断](#jump6.5.5)。
 
 ## 6.2 资质验证请求
 
-由验证方发送给持证主体，标明需要证书持有方出
-示的证书相关信息，参考示例如下:
+由验证方发送给持证主体，标明需要证书持有方出示的证书相关信息，参考示例如下:
 
 ```json
 {
@@ -342,8 +348,7 @@ BID结合区块链可以提供一个安全强大的去中心化解决方案，BI
 * requirements: 验证条件字段, 说明本次验证需要的证书和声明格式：
 
     * credentials: 证书要求字段, 表示需要持有方出示的可信声明里包含的证书, 格式为一个二维数组. 持有方出示声明时, 证书符合第一层数组内任意子数组内的所有证书要求即可。例如，当credentials为[[a], [b, c]]时，持有方可以出示[a]或者[b,c]的组合来通过验证。
-    
-    
+
         具体对每一个证书,可以约束以下字段：
         
         * type: 证书类型,必须字段
@@ -353,10 +358,9 @@ BID结合区块链可以提供一个安全强大的去中心化解决方案，BI
         * issuer: 证书发布方，标准地址格式
         * valideBefore: 证书最早失效时间
         * subject: 证书主体，标准地址格式
-        * presentation表示对可信声明部分的要求
-        * composeType 验证方支持可信证书组装成可信声明的形式
+        * presentation：表示对可信声明部分的要求
+        * composeType：验证方支持可信证书组装成可信声明的形式，具体定义见[可信声明推断](#jump6.5.5)。
     
-    `composeType`具体定义见[附录](#jump6.5.5)。
 
 ## 6.3 可信数字声明
 
@@ -373,12 +377,18 @@ BID结合区块链可以提供一个安全强大的去中心化解决方案，BI
     "credentialRequest":{
         "jws":""
     },
+    "credentialParse": [
+        {
+            "parseType": "...",
+            "format" : ""
+        }
+    ],
     "verifiableCredential":[
         {
             "@id":"did:bid:efJgt44mNDewKK1VEN454R17cjso3mSG"
         },
         {
-            "jws":"…"
+            "jws":"..."
         },
         {
             "@context":[
@@ -411,14 +421,15 @@ BID结合区块链可以提供一个安全强大的去中心化解决方案，BI
             "proof":{
                 "type":"RsaSignature2018",
                 "created":"2017-06-18T21:19:10Z",
-                "jws":"……"
+                "jws":"..."
             }
         }
     ],
-    "proof":{
-        "type":"direct",
+    "proofs":{
+        "composeType": "direct",
         "created":"2018-09-14T21:19:10Z",
-        "jws":"…"
+        "jws":"...",
+        "credentialSubject":"..."
     }
 }
 ```
@@ -427,21 +438,42 @@ BID结合区块链可以提供一个安全强大的去中心化解决方案，BI
 
 各项数据说明如下：
 
-* @context json-ld标准格式，必须包含 https://www.w3.org/2018/credentials/v1
-* type 类型字段，数组，必须包含VerifiablePresentation。
-* credentialRequest 验证请求，需要带上jws token。
+* @context：json-ld标准格式，必须包含 https://www.w3.org/2018/credentials/v1
+
+* type：类型字段，数组，必须包含VerifiablePresentation。
+
+* credentialRequest：验证请求，对应的资质验证请求的jws token。
+
+* credentialParse：数组,表示各个证书的解析方式,顺序和verifiableCredential里的证书一一对应.
+
+    * format
+
+      证书内容格式, 目前支持'jws'，'bid'。 
+
+      jws表示内嵌证书原文，bid表示提供链上证书id。
+
+    * parseType
+
+      证书内容解析方式，一般为direct，对于选择性披露格式为**sel-%hash算法%**。参见[可信声明推断](#jump6.5.5)。
+
 * verifiableCredential 可信证书字段，数组，具体证书支持三种格式：
-    * @id 证书在链上存有bid document，直接给出bid标识
+    * @id：证书在链上存有bid document，直接给出bid标识
 
-    * 内嵌数字证书，直接给出对应证书的jws token
+    * jws：内嵌数字证书，直接给出对应证书的jws token
 
-    * 内嵌数字证书原文，格式见可信数字证书格式，另外必须增加proof字段，内容是证书发行方对可信证书的签名：
+    * 内嵌数字证书原文：格式见可信数字证书格式，另外必须增加proof字段，内容是证书发行方对可信证书的签名：
 
-        * type 签名算法
-        * created 签名时间
-        * jws 签名后jws token
+        * type：签名算法
+        * created：签名时间
+        * jws：签名后jws token
 
-* proof 证书推断证明，这里针对不同的推断方式，proof会有不同的内容。参见[附录](#jump6.5.5)。
+* proofs 证书推断证明，这里针对不同的推断方式，proofs会有不同的内容。参见[可信声明推断](#jump6.5.5)。
+
+    * composeType：证明推断方式。必填
+    * created：证明创建时间。选填
+    * jws：签名后jws token。选填
+    * credentialSubject：选择性披露的字段。选填
+
 
 ## 6.4 验证通过证明
 
@@ -465,10 +497,10 @@ BID结合区块链可以提供一个安全强大的去中心化解决方案，BI
 
 各项字段说明如下：
 
-* type，必须包含PresentationVerified
-* credentialRequest, 必须为对应可验证声明的jws token
-* create 签发时间
-* issuer issuer自己的bid
+* type：必须包含PresentationVerified
+* credentialRequest：必须为对应可验证声明的jws token
+* create：签发时间
+* issuer：issuer自己的bid
 
 ## 6.5. 可信公开数据集
 
@@ -550,11 +582,12 @@ BID结合区块链可以提供一个安全强大的去中心化解决方案，BI
         "issuer": "发证方地址",
         "info": [
             { "version": "版本号", "template_id": "模板id"},
-        { "version": "..",      "template_id": "…" },
+        	{ "version": "..",      "template_id": "…" },
         …
         ]
     }
     ```
+
 3. [get] https://${url}/vc/template/?id=${id}
 
     查询某一个指定id的证书模板，模板文件内容为一个json-ld context。
@@ -589,17 +622,19 @@ BID结合区块链可以提供一个安全强大的去中心化解决方案，BI
         "issuer":"发证方bid",
         "template_id":"模板id",
         "context":{
-
+    
         }
     }
     ```
-
-    1. issuer为发证方bid地址，JWS payload必须用该地址对应私钥签名。
-
-    2.	template_id发证方自定义，要求不能重复。
-
-    3.	context为 credentialSubject的jsonld context描述。
-
+    
+    + issuer：为发证方bid地址，JWS payload必须用该地址对应私钥签名。
+    
+    
+    + template_id：发证方自定义，要求不能重复。
+    
+    
+    + context：为 credentialSubject的jsonld context描述。
+    
 5. [post] https://${url}/vc/type/create
 
     发证方调用，用来创建一个证书规范。
@@ -623,15 +658,15 @@ BID结合区块链可以提供一个安全强大的去中心化解决方案，BI
         "description":""
     }
     ```
-    1. issuer为发证方bid地址，JWS payload必须用该地址对应私钥签名。
+    + issuer：为发证方bid地址，JWS payload必须用该地址对应私钥签名。
 
-    2. type证书类型，例如 "Residential" 居住证明。
+    + type：证书类型，例如 "Residential" 居住证明。
 
-    3. version 版本号，同一个issuer同一个type下，version只能递增。
+    + version：版本号，同一个issuer同一个type下，version只能递增。
 
-    4. template_id 模板id，引用同一个issuer之前注册的模板。
+    + template_id：模板id，引用同一个issuer之前注册的模板。
 
-    5. description 描述信息。
+    + description：描述信息。
 
 ### 6.5.3	可信验证方信息
 
@@ -741,7 +776,10 @@ BID结合区块链可以提供一个安全强大的去中心化解决方案，BI
 
 #### 6.5.5.2 选择性披露方案
 
-选择性披露方案，指证书发布方做数字签名时针对属性值的哈希值做签名，而非对原值签名，这样持有方在做可信声明时，可以递交原证书给验证方验证有效性，然后选择性披露部分字段的原值，由验证方验证哈希值一致性，从而保护其他字段。同时，为了防止哈希碰撞攻击，证书发布方需要对每个属性字段加盐；持有方披露部分字段时，也要同时披露原值和对应的盐。
+选择性披露方案，指证书发布方做数字签名时针对属性值的哈希值做签名，而非对原值签名。
+为了防止哈希碰撞攻击，证书发布方需要对每个属性字段加盐。
+持证方在做可信声明时，可以选择性披露证书中部分字段的原值，由验证方验证哈希值一致性，从而保护其他字段。
+持证方披露部分字段时，要同时披露该字段原值和对应的盐；为了可以使验证方验证发证方签名，需要同时披露所有字段的哈希值。
 
 **示例：选择性披露年龄**
 
@@ -754,19 +792,19 @@ BID结合区块链可以提供一个安全强大的去中心化解决方案，BI
         "credentialSubject":{
             "id":"did:bid:efJgt44mNDewKK1VEN454R17cjso3mSG",
             "name":{
-                "hash":"..",
-                "value":"..",
-                "salt":".."
+                "hash":"...",
+                "value":"...",
+                "salt":"..."
             },
             "gender":{
-                "hash":"..",
-                "value":"..",
-                "salt":".."
+                "hash":"...",
+                "value":"...",
+                "salt":"..."
             },
             "age":{
-                "hash":"..",
+                "hash":"...",
                 "value":"22",
-                "salt":".."
+                "salt":"..."
             }
         }
     }
@@ -776,22 +814,29 @@ BID结合区块链可以提供一个安全强大的去中心化解决方案，BI
 
     在针对该证书做签名时，发证方略去了name.value/salt, gender.value/salt, age.value/salt字段。
 
-3. 某一个场合需要用户a出示年龄证明时，验证方向a发出验证申请，里面标明验证方支持sel-disclose-SHA256 选择性披露。
+3. 某一个场合需要用户a出示年龄证明时，验证方向a发出验证申请，里面标明验证方支持sel-disclose-SHA256选择性披露。
 
-4. 用户a从自己持有的居民证书中复制出jws token字段（注意，不携带证书原文，因为属性value值在原文里），组装成可信声明如下:
+4. 用户a从自己持有的居民证书中复制出jws token字段，从证书原文中复制出需披露的字段原文和其他字段哈希（注意，非证书原文，因为属性value值在原文里），组装成可信声明如下:
 
     ```json
     {
         "verifiableCredential":[
             {
-                "jws":""
+                "jws":"..."
             }
         ],
-        "proof":{
-            "type":"sel-disclose-MD5",
+        "proofs":{
+            "composeType":"sel-disclose-SHA256",
             "created":"2018-09-14T21:19:10Z",
-            "proofs":{
+            "credentialSubject":{
+                "name":{
+                    "hash":"..."
+                },
+                "gender":{
+                    "hash":"..."
+                },
                 "age":{
+                    "hash":"...",
                     "value":"22",
                     "salt":"..."
                 }
@@ -800,8 +845,8 @@ BID结合区块链可以提供一个安全强大的去中心化解决方案，BI
     }
     ```
 
-5.	验证方收到可信声明后，首先验证证书的jws token部分签名正确性，发证方符合要求，然后验证proof里的age部分
-SHA256(age.value + age.salt) = VC.credentialSubject.age.hash
+5.	验证方收到可信声明后，首先通过验证证书的jws token签名，以确认发证方符合要求、声明中hash的正确性；
+然后验证proofs.credentialSubject里的age部分SHA256(age.value + age.salt) = age.hash
 验证符合后，验证方可相信该用户age确实为22，同时无法知道用户的其他信息。
 
 #### 6.5.5.3 可信声明推断类型枚举
@@ -814,6 +859,80 @@ SHA256(age.value + age.salt) = VC.credentialSubject.age.hash
 ### 6.5.6 安全考虑
 
 选择性披露的hash方法由发证方自行选择，建议采用SHA256，另外出于防止碰撞攻击考虑，强烈建议用户在做过选择性披露后，立刻向原发证方请求刷新一份新的数字证书供后续使用。
+
+## 6.6 可信数字证书使用实例
+
+### 6.6.1 可信企业数字证书原文
+
+```json
+{
+    "@context": ["https://www.w3.org/2018/credentials/v1"],
+    "credentialSubject": {
+        "bid": {
+            "hash": "de036b5f7724094b864dd4403844c409117a0c9443eae9d3c759819250f9faf0",
+            "salt": "4880480410620290",
+            "value": "did:bid:efbqWw8mbKvtGdQEi9A268YBhTrDg9pe"
+        },
+        "certBid": {
+            "hash": "fb2fc450aaaa6c1a030536b563aa2c02de7c2ffc18964f02d5afdbf28096a250",
+            "salt": "1720811821663454",
+            "value": "did:bid:efVdhV2nrZeDBLjxQrqBsMej8JC1oRUK"
+        },
+        "companyName": {
+            "hash": "7d37d8e402f2980ab1866b6ca2f5667d1f05c1939f5b7480c0528cb1e871e030",
+            "salt": "2706047974179116",
+            "value": "**区块链技术有限公司"
+        },
+        "id": "did:bid:efbqWw8mbKvtGdQEi9A268YBhTrDg9pe"
+    },
+    "id": "did:bid:efVdhV2nrZeDBLjxQrqBsMej8JC1oRUK",
+    "issuanceDate": "2022-04-09T06:36:30Z",
+    "issuer": "did:bid:ef14uPsX7XYLzsU4t2rnRrsK2zfUbFEj",
+    "parseType": "sel-disclose-SM2",
+    "revocationId": "did:bid:efmcmSddaQjhTY3kCiDDNzFTb2KWKj3P",
+    "templateId": "did:bid:efvBPiZWCuB89LpynLUpmXCozjGEouhU",
+    "type": ["VerifiableCredential", "identityCertification"],
+    "validBefore": "2099-01-01 00:00:00"
+}
+```
+
+### 6.6.2 可信验证声明原文
+
+```json
+{
+    "@context": ["https://www.w3.org/2018/credentials/v1"],
+    "credentialParse": [{
+        "format": "jws",
+        "parseType": "sel-disclose-SM2"
+    }],
+    "credentialRequest": {
+        "jws": "eyJhbGciOiJTTTIifQ.eyJAY29udGV4dCI6WyJodHRwczovL3d3dy53My5vcmcvMjAxOC9jcmVkZW50aWFscy92MSJdLCJpZCI6IjQwN2YxMGQ1LWI5YjMtNGEyYS04MTE5LWFmMTE1Njk3NTdhYyIsInJlcXVpcmVtZW50cyI6eyJjcmVkZW50aWFscyI6W1t7ImNvbnRlbnQiOiJ7XCJjZXJ0QmlkXCI6XCJkaWQ6YmlkOmVmWHlLRFBhbnZqNEtmdzZZYmF4eGpSa3pyS3dRSjhmXCJ9IiwiaXNzdWVyIjoiZGlkOmJpZDplZjE0dVBzWDdYWUx6c1U0dDJyblJyc0syemZVYkZFaiIsIm1heFZlcnNpb24iOiIxLjAuMCIsIm1pblZlcnNpb24iOiIxLjAuMCIsInN1YmplY3QiOiJkaWQ6YmlkOmVmYnFXdzhtYkt2dEdkUUVpOUEyNjhZQmhUckRnOXBlIiwidHlwZSI6ImlkZW50aXR5Q2VydGlmaWNhdGlvbiIsInZhbGlkQmVmb3JlIjoiMjA5OS0wMS0wMSAwMDowMDowMCJ9XV0sInByZXNlbnRhdGlvbiI6eyJjb21wb3NlVHlwZSI6WyJzZWwtZGlzY2xvc2UtU00yIl19fSwic2VuZGVyIjoiZGlkOmJpZDplZnV6d2lUdDJieU55V3dYb3Zkd1NucFUzcmprVEpBeCIsInR5cGUiOlsiY3JlZGVudGlhbFJlcXVlc3QiXSwidmVyaWZpZXIiOiJkaWQ6YmlkOmVmdXp3aVR0MmJ5TnlXd1hvdmR3U25wVTNyamtUSkF4In0.K5OaOnvkY3adoVGX7uuaJIQKN04rW0SWR8sUHq7Eqvuey02DVYeLEAl_6OfsRHOycLv1LdXyAHof7tsHxIrBDA"
+    },
+    "proofs": {
+        "composeType": "sel-disclose-SM2",
+        "created":"2022-04-09T06:36:30Z",
+        "credentialSubject":{
+            "bid":{
+                "hash":"de036b5f7724094b864dd4403844c409117a0c9443eae9d3c759819250f9faf0"
+            },
+            "certBid":{
+                "hash":"fb2fc450aaaa6c1a030536b563aa2c02de7c2ffc18964f02d5afdbf28096a250",
+               	"value":"did:bid:efVdhV2nrZeDBLjxQrqBsMej8JC1oRUK",
+                "salt":"1720811821663454"
+            },
+            "companyName":{
+                "hash":"7d37d8e402f2980ab1866b6ca2f5667d1f05c1939f5b7480c0528cb1e871e030"
+            }
+        }
+    },
+    "type": ["VerifiablePresentation"],
+    "verifiableCredential": [{
+        "jws": "eyJhbGciOiJTTTIifQ.eyJAY29udGV4dCI6WyJodHRwczovL3d3dy53My5vcmcvMjAxOC9jcmVkZW50aWFscy92MSJdLCJjcmVkZW50aWFsU3ViamVjdCI6eyJiaWQiOnsiaGFzaCI6ImIyMmI2NzBkZDk1YmY1ODZiYzE1YzI1ZTY0NTgzZjA5ZmRhZDZhOGZhNjUyZWNjNjU3NTk3ZTZmNTY5OGNkNmQifSwiY2VydEJpZCI6eyJoYXNoIjoiMGNjNjEyOWM3YWE4Y2Q1NWFlOTU1ZWI0OTNhNWY5MGYwZDdmNmIzYWYyMzk0ZGIxN2VkMjU0OGMwMzBjOGMxMSIsInNhbHQiOiIxNTAwMzEzODk2NDIyOTgwIiwidmFsdWUiOiJkaWQ6YmlkOmVmTXJvN2lBMVROYTh0TXdINEUzenlYeHk2dTNBbUdEIn0sImlkIjoiZGlkOmJpZDplZmJxV3c4bWJLdnRHZFFFaTlBMjY4WUJoVHJEZzlwZSJ9LCJpZCI6ImRpZDpiaWQ6ZWZNcm83aUExVE5hOHRNd0g0RTN6eVh4eTZ1M0FtR0QiLCJpc3N1YW5jZURhdGUiOiIyMDIyLTA0LTAyVDA5OjUxOjM4WiIsImlzc3VlciI6ImRpZDpiaWQ6ZWYxOEY5QVZLNFNRTFpQUnJQa3JWV3dwOWticGRYSHgiLCJwYXJzZVR5cGUiOiJzZWwtZGlzY2xvc2UtU00yIiwicmV2b2NhdGlvbklkIjoiIiwidGVtcGxhdGVJZCI6ImRpZDpiaWQ6ZWYyQU5IOHpyVk04S28xSEFqVjZObmNhZGdDRUxCOU4xIiwidHlwZSI6WyJWZXJpZmlhYmxlQ3JlZGVudGlhbCIsImlkZW50aXR5Q2VydGlmaWNhdGlvbiJdLCJ2YWxpZEJlZm9yZSI6IjIwOTktMDEtMDEgMDA6MDA6MDAifQ.MTIz"
+    }]
+}
+```
+
+
 
 # 7. 缺陷
 
