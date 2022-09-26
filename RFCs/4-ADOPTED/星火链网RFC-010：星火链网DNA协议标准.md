@@ -8,7 +8,7 @@
 
 标题：星火链网DNA协议标准
 
-作者：金健，[jinjian1@caict.ac.cn](mailto:jinjian1@caict.ac.cn)；谢家贵，[xiejiagui@caict.ac.cn](mailto:xiejiagui@caict.ac.cn)；李志平，[lizhiping@caict.ac.cn](mailto:lizhiping@caict.ac.cn)；郭世杰，[guoshijie@caict.ac.cn](mailto:guoshijie@caict.ac.cn)；聂凡杰[niefanjie@caict.ac.cn](mailto:niefanjie@caict.ac.cn)
+作者：金键，[jin.jian@caict.ac.cn](mailto:jin.jian@caict.ac.cn)；谢家贵，[xiejiagui@caict.ac.cn](mailto:xiejiagui@caict.ac.cn)；李志平，[lizhiping@caict.ac.cn](mailto:lizhiping@caict.ac.cn)；郭世杰，[guoshijie@caict.ac.cn](mailto:guoshijie@caict.ac.cn)；聂凡杰[niefanjie@caict.ac.cn](mailto:niefanjie@caict.ac.cn)
 
 发布时间：2022-04-29
 
