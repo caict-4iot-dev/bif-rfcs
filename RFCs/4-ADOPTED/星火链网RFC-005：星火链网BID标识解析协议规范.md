@@ -111,7 +111,7 @@ BID解析是指获取给定BID的BID文档的过程,所有主链上的超级节�
 | data.didDocument.extension.delegateSign.signer         | String        | 签名公钥id                                          |
 | data.didDocument.extension.delegateSign.signatureValue | String        | 签名的base58编码                                    |
 | data.didDocument.extension.type                        | Int           | 见附录属性类型                                      |
-| data.didDocument.extension.attributes                  | Array(Object) | 一组属性,属性结构见属性结构章节                     |
+| data.didDocument.extension.attributes                  | Array(Object) | 一组属性,属性结构见下文                             |
 | data.didDocument.extension.acsns                       | Array(String) | AC号列表                                            |
 | data.didDocument.extension.verifiableCredentials       | Array(Object) | 凭证列表，只有主链非凭证类型的BID文档才可能有本字段 |
 | data.didDocument.extension.verifiableCredentials.id    | String        | 凭证ID                                              |
@@ -204,7 +204,7 @@ BID解析是指获取给定BID的BID文档的过程,所有主链上的超级节�
                 "https://www.w3.org/ns/did/v1"
             ],
             "version": "1.0.0",
-            "id": "did:bid:1234",
+            "id": "did:bid:efnVUgqQFfYeu97ABf6sGm3WFtVXHZB2",
             "publicKey": [
                 {
                     "id": "did:bid:efnVUgqQFfYeu97ABf6sGm3WFtVXHZB2#key-1",

@@ -93,56 +93,53 @@ BID的协议元数据为BID文档。BID文档遵循DID Document规范，并在�
 * extension：BID扩展字段。包含如下字段：
 
     * recovery：选填字段。一组公钥id, 在authentication 私钥泄漏或者丢失的情况下用来恢复对文档的控制权。
-
     * ttl: 必填字段。Time-To-Live，即如果解析使用缓存的话缓存生效的时间，单位秒。
-
     * delegateSign: 选填字段。第三方对publicKey的签名，可信解析使用。包括：signer和signatureValue。
 
         * signer ：签名者，这里是一个公钥的id。
         * signatureValue: 使用相应私钥对publicKey字段的签名。
-
     * type: 必填字段。BID文档的属性类型，取值见附录属性类型。
 
-    * attributes: 必填字段。一组属性，属性为如下结构：
-        
-        | 字段名 | 描述 |
-        |----| ----|
-        | key | 属性的关键字 | 
-        | desc | 选填。属性描述 |
-        | encrypt | 选填。是否加密，0非加密，1加密 |
-        | format | 选填。image、text、video、mixture等数据类型 |
-        | value | 选填。属性自定义value |
-        
-    * acsns:选填字段。一组子链AC号，只有BID文档类型不是凭证类型且文档是主链上的BID文档才可能有该字段，存放当前BID拥有的所有AC号。
-    
-    * verifiableCredentials:选填字段。凭证列表，包含id和type两个字段。
-        * id:可验证声明的BID。
-        * type：凭证类型。详见附录凭证类型。
-    
-    * service：选填字段。一组服务地址，包括id，type，serviceEndpoint三个必填字段。
-        * id: 服务地址的ID。
-        * type：字符串，代表服务的类型。取值见附录服务类型。
-        * serviceEndpoint：一个URI地址。
-    
-            当type为子链解析服务时， service为以下结构：
-    
-            | 字段名 | 描述 |
-            | ----- | ---- |
-            | id | 服务地址的ID |
-            | type | DIDSubResolver | 
-            | version | 服务支持的BID解析协议版本 | 
-            | protocol | 解析协议支持的传输协议类型, 具体取值见附录解析服务协议类型 | 
-            | serverType | 服务地址类型，0为域名形式，1为IP地址形式 |
-            | serviceEndpoint | 解析地址的IP或域名 |
-            |port | serverType为1时有该字段，解析服务的端口号 |
+* attributes: 必填字段。一组属性，属性为如下结构：
 
-    * created：必填字段。创建时间。
-    
-    * updated：必填字段。上次的更新时间。
-    
-    * proof：选填字段。文档所有者对文档内容的签名，包括：creator和signatureValue。
-        * creator：proof的创建者，这里是一个公钥的id。
-        * signatureValue：使用相应私钥对除proof字段的整个BID文档签名。
+    | 字段名 | 描述 |
+    |----| ----|
+    | key | 属性的关键字 | 
+    | desc | 选填。属性描述 |
+    | encrypt | 选填。是否加密，0非加密，1加密 |
+    | format | 选填。image、text、video、mixture等数据类型 |
+    | value | 选填。属性自定义value |
+
+* acsns:选填字段。一组子链AC号，只有BID文档类型不是凭证类型且文档是主链上的BID文档才可能有该字段，存放当前BID拥有的所有AC号。
+
+* verifiableCredentials:选填字段。凭证列表，包含id和type两个字段。
+    * id:可验证声明的BID。
+    * type：凭证类型。详见附录凭证类型。
+
+* service：选填字段。一组服务地址，包括id，type，serviceEndpoint三个必填字段。
+    * id: 服务地址的ID。
+    * type：字符串，代表服务的类型。取值见附录服务类型。
+    * serviceEndpoint：一个URI地址。
+
+        当type为子链解析服务时， service为以下结构：
+
+        | 字段名 | 描述 |
+        | ----- | ---- |
+        | id | 服务地址的ID |
+        | type | DIDSubResolver | 
+        | version | 服务支持的BID解析协议版本 | 
+        | protocol | 解析协议支持的传输协议类型, 具体取值见附录解析服务协议类型 | 
+        | serverType | 服务地址类型，0为域名形式，1为IP地址形式 |
+        | serviceEndpoint | 解析地址的IP或域名 |
+        |port | serverType为1时有该字段，解析服务的端口号 |
+
+* created：必填字段。创建时间。
+
+* updated：必填字段。上次的更新时间。
+
+* proof：选填字段。文档所有者对文档内容的签名，包括：creator和signatureValue。
+    * creator：proof的创建者，这里是一个公钥的id。
+    * signatureValue：使用相应私钥对除proof字段的整个BID文档签名。
 
 ## 5.2 元数据示例
 
