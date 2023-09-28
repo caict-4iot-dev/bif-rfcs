@@ -417,7 +417,7 @@ BID管理协议基于HTTP/HTTPS通信协议，使用POST方法，参数使用JSO
 	```json
 	{
 		"id": "did:bid:efnVUgqQFfYeu97ABf6sGm3WFtVXHZB2",
-		"operation": "update",
+		"operation": "recovery",
 		"didDocument": {
 			"@context": ["https://www.w3.org/ns/did/v1"],
 			"version": "1.0.0",
