@@ -226,7 +226,7 @@ BID结合区块链可以提供一个安全强大的去中心化解决方案，BI
 4. 需要验证所有证书的发证方信息与可信公开数据库里信息一致。
 5. 需要验证证书到声明的推断合法有效。
 
-#### 5.2.2.6 证书声明周期管理
+#### 5.2.2.6 证书生命周期管理
 
 1. 证书刷新
 
@@ -264,7 +264,7 @@ BID结合区块链可以提供一个安全强大的去中心化解决方案，BI
     "issuer":"did:bid:CredentialIssuerID",
     "issuanceDate":"2010-01-01T19:23:24Z",
     "templateId":"20100101T23Nedex",
-    "validBefore":"2010-10-01T19:23:24Z ",
+    "validBefore":"2010-10-01T19:23:24Z",
     "credentialSubject":{
         "id":"did:bid:CredentialSubjectID",
         "alumniOf":{

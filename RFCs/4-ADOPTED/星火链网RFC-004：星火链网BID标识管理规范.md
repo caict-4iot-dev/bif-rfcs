@@ -163,7 +163,7 @@ BID的协议元数据为BID文档。BID文档遵循DID Document规范，并在�
 	"extension": {
 		"recovery": ["did:bid:efnVUgqQFfYeu97ABf6sGm3WFtVXHZB2#key-2"],
 		"ttl": 86400,
-		"delegateSign ": {
+		"delegateSign": {
 			"signer": "did:bid:efJgt44mNDewKK1VEN454R17cjso3mSG#key-1",
 			"signatureValue": "eyJhbGciOiJSUzI1NiIsImI2NCI6ZmFsc2UsImNyaXQiOlsiYjY0Il19"
 		},
@@ -180,7 +180,7 @@ BID的协议元数据为BID文档。BID文档遵循DID Document规范，并在�
 	}],
 	"created": "2021-05-10T06:23:38Z",
 	"updated": "2021-05-10T06:23:38Z",
-"proof": {
+	"proof": {
 		"creator": "did:bid:efJgt44mNDewKK1VEN454R17cjso3mSG#key-1",
 		"signatureValue": "9E07CD62FE6CE0A843497EBD045C0AE9FD6E1845414D0ED251622C66D9CC927CC21DB9C09DFF628DC042FCBB7D8B2B4901E7DA9774C20065202B76D4B1C15900"
 	}

@@ -214,7 +214,7 @@ BID由前缀Prefix、共识码（AC号）、加密类型、编码类型、后缀
 
 **1）前缀Prefix：**
 
-BID的前缀，为固定字符串“did:bid:”，其中bid:did小写。
+BID的前缀，为固定字符串“did:bid:”，其中did:bid小写。
 
 **2）共识域号/共识码（AC号）：**
 
